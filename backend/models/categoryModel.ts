@@ -1,19 +1,7 @@
 import mongoose from 'mongoose';
 import slugifyModelFunc from '../utils/slugifyModelFunc';
 
-interface ICategory extends mongoose.Document {
-  name: string;
-  menu: mongoose.Schema.Types.ObjectId;
-  characteristics: [
-    {
-      name: string;
-      parameters: [string];
-    }
-  ];
-  slug: string;
-}
-
-const categorySchema = new mongoose.Schema<ICategory>({
+const categorySchema = new mongoose.Schema({
   name: {
     type: String,
     unique: true,

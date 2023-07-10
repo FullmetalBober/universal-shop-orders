@@ -1,13 +1,7 @@
 import mongoose from 'mongoose';
 import slugifyModelFunc from '../utils/slugifyModelFunc';
 
-interface IMenu extends mongoose.Document {
-  name: string;
-  order: number;
-  slug: string;
-}
-
-const menuSchema = new mongoose.Schema<IMenu>({
+const menuSchema = new mongoose.Schema({
   name: {
     type: String,
     unique: true,
