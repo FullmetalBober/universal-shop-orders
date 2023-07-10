@@ -10,63 +10,77 @@ export interface IUser extends mongoose.Document {
   role: string;
   password: string;
   passwordConfirm?: string;
-  passwordChangedAt: Date;
-  passwordResetToken: string;
-  passwordResetExpires: Date;
-  correctPassword(
-    candidatePassword: string,
-    userPassword: string
-  ): Promise<boolean>;
-  changedPasswordAfter(JWTTimestamp: number): boolean;
-  createPasswordResetToken(): string;
+  passwordChangedAt?: Date;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
+  emailResetToken?: string;
+  emailResetExpires?: Date;
 }
 
-const userSchema = new mongoose.Schema<IUser>({
-  name: {
-    type: String,
-    trim: true,
-    immutable: true,
-    required: [true, 'User must have a name'],
-  },
-  email: {
-    type: String,
-    unique: true,
-    lowercase: true,
-    trim: true,
-    validate: [validator.isEmail, 'Please provide a valid email'],
-    required: [true, 'User must have an email'],
-  },
-  photo: {
-    type: String,
-    trim: true,
-    default: '/images/user/default.jpg',
-  },
-  role: {
-    type: String,
-    trim: true,
-    enum: ['user', 'moderator', 'admin'],
-    default: 'user',
-  },
-  password: {
-    type: String,
-    minlength: 8,
-    select: false,
-    required: [true, 'User must have a password'],
-  },
-  passwordConfirm: {
-    type: String,
-    validate: {
-      validator: function (this: IUser, el: string): boolean {
-        return el === this.password;
-      },
-      message: 'Passwords are not the same!',
+const userSchema = new mongoose.Schema<IUser>(
+  {
+    name: {
+      type: String,
+      trim: true,
+      immutable: true,
+      required: [true, 'User must have a name'],
     },
-    required: [true, 'User must have a password confirmation'],
+    email: {
+      type: String,
+      lowercase: true,
+      trim: true,
+      validate: [validator.isEmail, 'Please provide a valid email'],
+      required: [true, 'User must have an email'],
+    },
+    photo: {
+      type: String,
+      trim: true,
+      default: '/images/user/default.jpg',
+    },
+    role: {
+      type: String,
+      trim: true,
+      enum: ['unconfirmed', 'user', 'moderator', 'admin'],
+      default: 'user',
+    },
+    password: {
+      type: String,
+      minlength: 8,
+      select: false,
+      required: [true, 'User must have a password'],
+    },
+    passwordConfirm: {
+      type: String,
+      validate: {
+        validator: function (this: IUser, el: string): boolean {
+          return el === this.password;
+        },
+        message: 'Passwords are not the same!',
+      },
+      required: [true, 'User must have a password confirmation'],
+    },
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
+    emailResetToken: String,
+    emailResetExpires: Date,
   },
-  passwordChangedAt: Date,
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-});
+  {
+    timestamps: true,
+  }
+);
+
+const partialFilterExpression = { role: { $ne: 'unconfirmed' } };
+
+userSchema.index({ email: 1 }, { unique: true, partialFilterExpression });
+
+userSchema.index(
+  { createdAt: 1 },
+  {
+    expireAfterSeconds: 7 * 24 * 60 * 60,
+    partialFilterExpression,
+  }
+);
 
 userSchema.index(
   { role: 1 },
