@@ -8,10 +8,10 @@ const categorySchema = new mongoose.Schema({
     trim: true,
     required: [true, 'Category must have a name'],
   },
-  menu: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Menu',
-    required: [true, 'Category must belong to a menu'],
+  menuType: {
+    type: String,
+    trim: true,
+    required: [true, 'Category must have a menu type'],
   },
   characteristics: [
     {
