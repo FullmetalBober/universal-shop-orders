@@ -36,4 +36,4 @@ slugifyModelFunc(orderSchema, 'name');
 
 const Order = mongoose.model('Order', orderSchema);
 
-module.exports = Order;
+export default Order;

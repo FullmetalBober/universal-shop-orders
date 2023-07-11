@@ -8,13 +8,14 @@ export interface IUser extends mongoose.Document {
   email: string;
   photo: string;
   role: string;
-  password: string;
+  password?: string;
   passwordConfirm?: string;
   passwordChangedAt?: Date;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
   emailResetToken?: string;
   emailResetExpires?: Date;
+  changedPasswordAfter: (JWTTimestamp: number) => boolean;
 }
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -90,7 +91,7 @@ userSchema.index(
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
 
-  this.password = await bcrypt.hash(this.password, 12);
+  this.password = await bcrypt.hash(this.password!, 12);
 
   this.passwordConfirm = undefined;
   next();
@@ -136,4 +137,4 @@ userSchema.methods.createResetToken = function (field: 'email' | 'password') {
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = User;
+export default User;

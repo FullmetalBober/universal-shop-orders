@@ -34,4 +34,4 @@ slugifyModelFunc(categorySchema, 'name');
 
 const Category = mongoose.model('Category', categorySchema);
 
-module.exports = Category;
+export default Category;

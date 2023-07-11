@@ -1,4 +1,5 @@
-import express, { Express, Request, Response, NextFunction } from 'express';
+import express from 'express';
+import 'express-async-errors';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -13,7 +14,7 @@ import fs from 'fs';
 import globalErrorHandler from './middlewares/errorMiddleware';
 import AppError from './utils/appError';
 
-const app: Express = express();
+const app = express();
 
 app.enable('trust proxy');
 
@@ -48,7 +49,7 @@ app.use(compression());
 
 const frontendPath = path.join(__dirname, '../frontend/dist');
 
-app.all('*', (req: Request, res: Response, next: NextFunction) => {
+app.all('*', (req, res, next) => {
   fs.access(frontendPath, err => {
     if (err || req.originalUrl.startsWith('/api'))
       return next(
