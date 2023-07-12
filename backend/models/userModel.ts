@@ -8,14 +8,21 @@ export interface IUser extends mongoose.Document {
   email: string;
   photo: string;
   role: string;
-  password?: string;
+  password: string;
   passwordConfirm?: string;
+  verified: boolean;
   passwordChangedAt?: Date;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
   emailResetToken?: string;
   emailResetExpires?: Date;
   changedPasswordAfter: (JWTTimestamp: number) => boolean;
+  correctPassword: (
+    candidatePassword: string,
+    userPassword: string
+  ) => Promise<boolean>;
+  createResetToken: (field: 'email' | 'password') => string;
+  createPasswordResetToken: () => string;
 }
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -28,6 +35,7 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     email: {
       type: String,
+      unique: true,
       lowercase: true,
       trim: true,
       validate: [validator.isEmail, 'Please provide a valid email'],
@@ -41,7 +49,7 @@ const userSchema = new mongoose.Schema<IUser>(
     role: {
       type: String,
       trim: true,
-      enum: ['unconfirmed', 'user', 'moderator', 'admin'],
+      enum: ['user', 'moderator', 'admin'],
       default: 'user',
     },
     password: {
@@ -60,6 +68,10 @@ const userSchema = new mongoose.Schema<IUser>(
       },
       required: [true, 'User must have a password confirmation'],
     },
+    verified: {
+      type: Boolean,
+      default: true,
+    },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -71,15 +83,11 @@ const userSchema = new mongoose.Schema<IUser>(
   }
 );
 
-const partialFilterExpression = { role: { $ne: 'unconfirmed' } };
-
-userSchema.index({ email: 1 }, { unique: true, partialFilterExpression });
-
 userSchema.index(
   { createdAt: 1 },
   {
-    expireAfterSeconds: 7 * 24 * 60 * 60,
-    partialFilterExpression,
+    expireAfterSeconds: 24 * 60 * 60,
+    partialFilterExpression: { verified: false },
   }
 );
 

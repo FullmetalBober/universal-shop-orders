@@ -1,7 +1,7 @@
 import { RequestHandler, Request, Response } from 'express';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-const User = require('../models/userModel');
+import User from '../models/userModel';
 import AppError from '../utils/appError';
 import Email from '../utils/email';
 import { IUser } from '../models/userModel';
@@ -27,13 +27,13 @@ const createSendToken = (
     secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
   });
 
-  user.password = undefined;
+  const resUser = { ...user, password: undefined };
 
   res.status(statusCode).json({
     status: 'success',
     token,
     data: {
-      user,
+      resUser,
     },
   });
 };
@@ -62,7 +62,7 @@ export const login: RequestHandler = async (req, res, next) => {
 
   const user = await User.findOne({ email }).select('+password');
 
-  if (!user || !(await user.correctPassword(password, user.password))) {
+  if (!user || !(await user.correctPassword(password, user.password!))) {
     return next(new AppError('Incorrect email or password', 401));
   }
 
@@ -136,6 +136,8 @@ export const resetPassword: RequestHandler = async (req, res, next) => {
 
 export const updatePassword: RequestHandler = async (req, res, next) => {
   const user = await User.findById(req.user?.id).select('+password');
+
+  if (!user) return next(new AppError('User not found', 404));
 
   const passwordCurrent = req.body.passwordCurrent || '';
   if (!(await user.correctPassword(passwordCurrent, user.password))) {

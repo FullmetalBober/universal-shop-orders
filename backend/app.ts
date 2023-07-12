@@ -14,6 +14,8 @@ import fs from 'fs';
 import globalErrorHandler from './middlewares/errorMiddleware';
 import AppError from './utils/appError';
 
+import userRouter from './routes/userRoutes';
+
 const app = express();
 
 app.enable('trust proxy');
@@ -34,8 +36,9 @@ app.use('/api', limiter);
 
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
-app.use(express.static('public'));
+// app.use(express.static('public'));
 app.use(cookieParser());
+app.set('views', __dirname + '/views');
 
 app.use(mongoSanitize());
 
@@ -44,6 +47,8 @@ app.use(xcc());
 app.use(hpp());
 
 app.use(compression());
+
+app.use('/api/v1/users', userRouter);
 
 //? app.use(express.static(path.join(__dirname, '../frontend/dist')));
 

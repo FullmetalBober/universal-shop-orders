@@ -1,5 +1,5 @@
 import express from 'express';
-import userController from './../controllers/userController';
+import * as userController from './../controllers/userController';
 import * as authController from './../controllers/authController';
 import * as authMiddleware from './../middlewares/authMiddleware';
 
@@ -18,13 +18,13 @@ router.patch('/updateMyPassword', authController.updatePassword);
 router.get('/me', userController.getMe, userController.getUser);
 router.patch(
   '/updateMe',
-  userController.uploadMyPhoto,
+  // userController.uploadMyPhoto,
   userController.updateMe
 );
 router.delete(
   '/deleteMe',
   authMiddleware.restrictTo('user'),
-  userController.deleteMyPhoto,
+  // userController.deleteMyPhoto,
   userController.deleteMe
 );
 
@@ -34,7 +34,13 @@ router.route('/').get(userController.getAllUsers);
 router
   .route('/:id')
   .get(userController.getUser)
-  .patch(userController.uploadUserPhoto, userController.updateUser)
-  .delete(userController.deleteUserPhoto, userController.deleteUser);
+  .patch(
+    // userController.uploadUserPhoto,
+    userController.updateUser
+  )
+  .delete(
+    // userController.deleteUserPhoto,
+    userController.deleteUser
+  );
 
-module.exports = router;
+export default router;
