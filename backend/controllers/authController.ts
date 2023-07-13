@@ -27,13 +27,13 @@ const createSendToken = (
     secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
   });
 
-  const resUser = { ...user, password: undefined };
+  (user as any).password = undefined;
 
   res.status(statusCode).json({
     status: 'success',
     token,
     data: {
-      resUser,
+      user,
     },
   });
 };
@@ -46,11 +46,39 @@ export const signup: RequestHandler = async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
   });
 
-  const url = `${req.protocol}://${req.get('host')}/me`;
+  const activateToken = newUser.createResetToken('emailActivate');
+  await newUser.save({ validateBeforeSave: false });
+
+  const url = `${req.protocol}://${req.get(
+    'host'
+  )}/api/v1/users/activate/${activateToken}`;
 
   await new Email(newUser, url).sendWelcome();
 
   createSendToken(newUser, 201, req, res);
+};
+
+export const activateUser: RequestHandler = async (req, res, next) => {
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex');
+
+  const user = await User.findOne({
+    emailActivateToken: hashedToken,
+  });
+
+  if (!user) {
+    return next(new AppError('Token is invalid', 400));
+  }
+  user.verified = true;
+  user.emailActivateToken = undefined;
+  await user.save({ validateBeforeSave: false });
+
+  res.status(200).json({
+    status: 'success',
+    message: 'Email verified successfully',
+  });
 };
 
 export const login: RequestHandler = async (req, res, next) => {
@@ -83,7 +111,7 @@ export const forgotPassword: RequestHandler = async (req, res, next) => {
     return next(new AppError('There is no user with email address.', 404));
   }
 
-  const resetToken = user.createPasswordResetToken();
+  const resetToken = user.createResetToken('passwordReset');
   await user.save({ validateBeforeSave: false });
 
   try {

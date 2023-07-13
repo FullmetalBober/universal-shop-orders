@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc",
-    "start": "node dist/index.js",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
-    "debug": "concurrently \"npx tsc --watch\" \"ndb dist/index.js\""
+    "start": "concurrently \"npm run build\" \"node dist/index.js\"",
+    "dev": "concurrently \"npm run build-watch\" \"nodemon -q dist/index.js\"",
+    "debug": "concurrently \"npm run build-watch\" \"ndb dist/index.js\"",
+    "build": "concurrently \"npx tsc\" \"npm run copy-files\"",
+    "build-watch": "concurrently \"npx tsc --watch\" \"npm run copy-files\"",
+    "copy-files": "copyfiles ./views/**/* ./dist"
   },
   "keywords": [],
   "author": "Vladyslav Mankivskyi",
@@ -48,6 +50,7 @@
     "@types/pug": "^2.0.6",
     "@types/validator": "^13.7.17",
     "concurrently": "^8.2.0",
+    "copyfiles": "^2.4.1",
     "nodemon": "^2.0.22",
     "typescript": "^5.1.6"
   }

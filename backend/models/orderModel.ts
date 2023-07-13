@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import slugifyModelFunc from '../utils/slugifyModelFunc';
 
 const orderSchema = new mongoose.Schema({
   user: {
@@ -31,8 +30,6 @@ const orderSchema = new mongoose.Schema({
     default: 'pending',
   },
 });
-
-slugifyModelFunc(orderSchema, 'name');
 
 const Order = mongoose.model('Order', orderSchema);
 

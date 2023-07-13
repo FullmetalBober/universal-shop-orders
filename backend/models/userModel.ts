@@ -14,15 +14,13 @@ export interface IUser extends mongoose.Document {
   passwordChangedAt?: Date;
   passwordResetToken?: string;
   passwordResetExpires?: Date;
-  emailResetToken?: string;
-  emailResetExpires?: Date;
+  emailActivateToken?: string;
   changedPasswordAfter: (JWTTimestamp: number) => boolean;
   correctPassword: (
     candidatePassword: string,
     userPassword: string
   ) => Promise<boolean>;
-  createResetToken: (field: 'email' | 'password') => string;
-  createPasswordResetToken: () => string;
+  createResetToken: (field: 'emailActivate' | 'passwordReset') => string;
 }
 
 const userSchema = new mongoose.Schema<IUser>(
@@ -70,13 +68,12 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     verified: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
-    emailResetToken: String,
-    emailResetExpires: Date,
+    emailActivateToken: String,
   },
   {
     timestamps: true,
@@ -95,6 +92,17 @@ userSchema.index(
   { role: 1 },
   { unique: true, partialFilterExpression: { role: 'admin' } }
 );
+
+userSchema.pre(/^find/, function (next) {
+  const query = this as any;
+  const conditions = query._conditions;
+
+  if (conditions.emailActivateToken && Object.keys(conditions).length === 1)
+    return next();
+
+  query.find({ verified: { $ne: false } });
+  next();
+});
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
@@ -128,9 +136,11 @@ userSchema.methods.changedPasswordAfter = function (JWTTimestamp: number) {
   return false;
 };
 
-userSchema.methods.createResetToken = function (field: 'email' | 'password') {
-  const resetTokenField = `${field}ResetToken`;
-  const resetTokenExpiresField = `${field}ResetExpires`;
+userSchema.methods.createResetToken = function (
+  field: 'emailActivate' | 'passwordReset'
+) {
+  const resetTokenField = `${field}Token`;
+  const resetTokenExpiresField = `${field}Expires`;
   const resetToken = crypto.randomBytes(32).toString('hex');
 
   this[resetTokenField] = crypto
