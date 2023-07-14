@@ -5,15 +5,21 @@ import * as orderController from './../controllers/orderController';
 const router = express.Router();
 
 router.use(authMiddleware.protect);
+router.use(authMiddleware.setUserId);
+
+router
+  .route('/basket')
+  .post(authMiddleware.setUserId, orderController.createOrderFromBasket);
 
 router.route('/:id').get(orderController.getOrder);
 
-router.route('/').post(orderController.createOrder);
-
-router.route('/:id').patch(orderController.updateOrder);
-
 router.use(authMiddleware.restrictTo('moderator', 'admin'));
 
-router.route('/').get(orderController.getAllOrders);
+router.route('/:id').patch(orderController.setStatus);
 
-module.exports = router;
+router
+  .route('/')
+  .get(orderController.getAllOrders)
+  .post(orderController.createOrder);
+
+export default router;

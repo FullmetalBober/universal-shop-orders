@@ -4,10 +4,6 @@ import { promisify } from 'util';
 import User from '../models/userModel';
 import AppError from '../utils/appError';
 
-const verifyToken = promisify((token: string, secret: string) =>
-  jwt.verify(token, secret)
-);
-
 export const protect: RequestHandler = async (req, res, next) => {
   let token;
   if (
@@ -25,10 +21,10 @@ export const protect: RequestHandler = async (req, res, next) => {
     );
   }
 
-  const decoded = (await verifyToken(
+  const decoded = await (promisify as any)(jwt.verify)(
     token,
-    process.env.JWT_SECRET!
-  )) as jwt.JwtPayload;
+    process.env.JWT_SECRET
+  );
 
   const currentUser = await User.findById(decoded.id);
   if (!currentUser) {
@@ -51,32 +47,6 @@ export const protect: RequestHandler = async (req, res, next) => {
   next();
 };
 
-//? export const isLoggedIn: RequestHandler = async (req, res, next) => {
-//   if (req.cookies.jwt) {
-//     try {
-//       const decoded = (await verifyToken(
-//         req.cookies.jwt,
-//         process.env.JWT_SECRET!
-//       )) as jwt.JwtPayload;
-
-//       const currentUser = await User.findById(decoded.id);
-//       if (!currentUser) {
-//         return next();
-//       }
-
-//       if (currentUser.changedPasswordAfter(decoded.iat!)) {
-//         return next();
-//       }
-
-//       res.locals.user = currentUser;
-//       return next();
-//     } catch (err) {
-//       return next();
-//     }
-//   }
-//   next();
-// };
-
 export const restrictTo = (...roles: string[]): RequestHandler => {
   return (req, res, next) => {
     if (!roles.includes(req.user?.role)) {
@@ -87,4 +57,10 @@ export const restrictTo = (...roles: string[]): RequestHandler => {
 
     next();
   };
+};
+
+export const setUserId: RequestHandler = (req, res, next) => {
+  req.body.user = req.user?.id;
+  req.query.user = req.user?.id;
+  next();
 };

@@ -17,4 +17,4 @@ router
   .patch(categoryController.updateCategory)
   .delete(categoryController.deleteCategory);
 
-module.exports = router;
+export default router;

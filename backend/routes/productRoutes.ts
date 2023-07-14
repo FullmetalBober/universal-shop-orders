@@ -17,4 +17,4 @@ router
   .patch(productController.updateProduct)
   .delete(productController.deleteProduct);
 
-module.exports = router;
+export default router;

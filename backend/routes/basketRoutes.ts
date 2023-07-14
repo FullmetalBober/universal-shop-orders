@@ -5,6 +5,7 @@ import * as basketController from './../controllers/basketController';
 const router = express.Router();
 
 router.use(authMiddleware.protect);
+router.use(authMiddleware.setUserId);
 
 router.route('/:id').get(basketController.getBasket);
 
@@ -19,4 +20,4 @@ router.use(authMiddleware.restrictTo('moderator', 'admin'));
 
 router.route('/').get(basketController.getAllBaskets);
 
-module.exports = router;
+export default router;

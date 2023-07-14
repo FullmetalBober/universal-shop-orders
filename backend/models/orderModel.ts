@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
   },
   products: [
     {
-      name: {
+      product: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Product',
         required: [true, 'Order must belong to a product'],

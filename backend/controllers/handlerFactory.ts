@@ -112,31 +112,3 @@ export const getAll =
       },
     });
   };
-
-//? exports.checkToDelete = (Models, key) =>
-//   catchAsync(async (req, res, next) => {
-//     const findByKey = (Model, key) => Model.findOne({ [key]: req.params.id });
-
-//     let promises = [];
-//     if (Array.isArray(Models))
-//       Models.forEach(Model => {
-//         promises.push(findByKey(Model, key));
-//       });
-//     else promises.push(findByKey(Models, key));
-
-//     promises = await Promise.all(promises);
-
-//     if (promises.some(promise => promise))
-//       return next(
-//         new AppError(
-//           `This ${key} has ${
-//             Array.isArray(Models)
-//               ? Models.map(Model => Model.collection.collectionName).join(', ')
-//               : Models.collection.collectionName
-//           }, you cannot delete it`,
-//           400
-//         )
-//       );
-
-//     next();
-//   });

@@ -24,6 +24,17 @@ const productSchema = new mongoose.Schema({
       default: '/images/productDefault.jpg',
     },
   ],
+  brand: {
+    type: String,
+    trim: true,
+  },
+  stock: {
+    type: Number,
+    min: 0,
+    step: 1,
+    default: 0,
+    required: [true, 'Product must have a stock'],
+  },
   characteristics: [
     {
       name: {
