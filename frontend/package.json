@@ -9,8 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.9.5",
     "preact": "^10.15.1",
-    "preact-router": "^4.1.1"
+    "preact-router": "^4.1.1",
+    "react-fetch-hook": "^1.9.5",
+    "react-redux": "^8.1.1"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.5.0",

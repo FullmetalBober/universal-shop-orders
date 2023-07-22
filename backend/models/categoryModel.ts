@@ -11,6 +11,7 @@ const categorySchema = new mongoose.Schema({
   menuType: {
     type: String,
     trim: true,
+    toLowerCase: true,
     required: [true, 'Category must have a menu type'],
   },
   characteristics: [
