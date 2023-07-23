@@ -4,5 +4,10 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [require('daisyui')],
+  plugins: [
+    function ({ addVariant }) {
+      addVariant('child', '& > *');
+    },
+    require('daisyui'),
+  ],
 };

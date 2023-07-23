@@ -84,7 +84,7 @@ userSchema.index(
   { createdAt: 1 },
   {
     expireAfterSeconds: 24 * 60 * 60,
-    partialFilterExpression: { verified: false },
+    partialFilterExpression: { verified: true },
   }
 );
 

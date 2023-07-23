@@ -1,5 +1,11 @@
+import NavMenu from './NavMenu';
+
 const Home = () => {
-  return <main>Home</main>;
+  return (
+    <main>
+      <NavMenu />
+    </main>
+  );
 };
 
 export default Home;

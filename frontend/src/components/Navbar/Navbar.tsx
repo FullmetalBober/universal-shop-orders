@@ -1,11 +1,13 @@
+import { Link } from 'preact-router/match';
+
 const img = null;
 
 const Navbar = () => {
   return (
-    <div class='flex justify-center'>
-      <nav class='navbar sticky top-0 bg-base-100 md:w-[1500px] '>
+    <header class='flex justify-center'>
+      <div class='navbar sticky top-0 bg-base-100 md:w-[1500px] '>
         <div class='navbar-start'>
-          <a class='btn btn-ghost text-xl normal-case'>F5</a>
+          <Link class='btn btn-ghost text-xl normal-case'>F5</Link>
         </div>
         <div class='navbar-center md:w-[650px]'>
           <div class='form-control w-full'>
@@ -17,7 +19,7 @@ const Navbar = () => {
           </div>
         </div>
         <div class='navbar-end gap-2'>
-          <div class='dropdown-end dropdown'>
+          <div class='dropdown dropdown-end'>
             <label
               tabIndex={0}
               class='avatar placeholder btn btn-circle btn-ghost'
@@ -43,8 +45,8 @@ const Navbar = () => {
             </ul>
           </div>
         </div>
-      </nav>
-    </div>
+      </div>
+    </header>
   );
 };
 

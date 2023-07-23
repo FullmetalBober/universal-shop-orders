@@ -4,7 +4,7 @@ import { fetchCategoryData } from './category-actions';
 const categorySlice = createSlice({
   name: 'category',
   initialState: {
-    items: [],
+    items: [] as Category[],
   },
   reducers: {
     replaceCategories(state, action) {
@@ -14,7 +14,7 @@ const categorySlice = createSlice({
   extraReducers: builder => {
     builder.addCase(fetchCategoryData.fulfilled, (state, action) => {
       if (action.payload.status === 'success')
-        state.items = action.payload.data;
+        state.items = action.payload.data.data;
     });
   },
 });
