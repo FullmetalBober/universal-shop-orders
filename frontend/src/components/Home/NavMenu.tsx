@@ -20,7 +20,7 @@ const NavMenu = () => {
             <li tabIndex={0}>
               <a class='tab tab-bordered hover:tab-active'>{type}</a>
             </li>
-            <ul tabIndex={0} className='menu dropdown-content'>
+            <ul tabIndex={0} className='menu dropdown-content z-10'>
               {categories
                 .filter(category => category.menuType === type.toLowerCase())
                 .map(category => (

@@ -6,6 +6,7 @@ import { useAppDispatch } from './store';
 import { fetchCategoryData } from './store/category-actions';
 
 import './app.css';
+import Footer from './components/Footer/Footer';
 
 export function App() {
   const dispatch = useAppDispatch();
@@ -20,6 +21,7 @@ export function App() {
       <Router>
         <Route path='/' component={Home} />
       </Router>
+      <Footer />
     </>
   );
 }

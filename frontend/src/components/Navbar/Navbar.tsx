@@ -1,4 +1,4 @@
-import { Link } from 'preact-router/match';
+import { Link } from 'preact-router';
 
 const img = null;
 
