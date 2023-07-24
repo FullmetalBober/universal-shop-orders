@@ -4,7 +4,7 @@ const img = null;
 
 const Navbar = () => {
   return (
-    <header class='navbar sticky top-0 z-30 mx-auto bg-base-100 md:w-[1500px]'>
+    <header class='navbar sticky top-0 z-30 mx-auto bg-base-100 md:max-w-[1500px]'>
       <div class='navbar-start'>
         <Link href='/' class='btn btn-ghost text-xl normal-case'>
           F5
@@ -20,7 +20,7 @@ const Navbar = () => {
         </div>
       </div>
       <div class='navbar-end gap-2'>
-        <div class='dropdown-end dropdown'>
+        <div class='dropdown dropdown-end'>
           <label
             tabIndex={0}
             class='avatar placeholder btn btn-circle btn-ghost'

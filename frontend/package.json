@@ -13,8 +13,8 @@
     "preact": "^10.15.1",
     "preact-router": "^4.1.1",
     "react-fetch-hook": "^1.9.5",
-    "react-redux": "^8.1.1",
-    "react-responsive-carousel": "^3.2.23"
+    "react-multi-carousel": "^2.8.4",
+    "react-redux": "^8.1.1"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.5.0",

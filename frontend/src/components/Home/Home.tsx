@@ -11,7 +11,7 @@ const Home = () => {
   const categoriesData: Category[] = categoriesResponse?.data.data;
 
   return (
-    <main class='mx-auto md:w-[1500px]'>
+    <main class='mx-auto md:max-w-[1500px]'>
       {categoriesLoading && <Loading />}
       {categoriesData && <NavMenu categories={categoriesData} />}
       <Novelty />
