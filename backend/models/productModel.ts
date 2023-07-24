@@ -17,13 +17,15 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Product must have a price'],
   },
-  images: [
-    {
-      type: String,
-      trim: true,
-      default: '/images/productDefault.jpg',
-    },
-  ],
+  images: {
+    type: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
+    default: ['/images/productDefault.jpg'],
+  },
   brand: {
     type: String,
     trim: true,
@@ -49,6 +51,7 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
+  slug: String,
 });
 
 slugifyModelFunc(productSchema, 'name');
