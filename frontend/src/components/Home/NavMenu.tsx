@@ -1,8 +1,6 @@
 import { Link } from 'preact-router';
+import { capitalizeFirstLetter } from '../../utils/text';
 // import { useAppSelector } from '../../store';
-
-const capitalizeFirstLetter = (string: string) =>
-  string.charAt(0).toUpperCase() + string.slice(1);
 
 interface IProps {
   categories: Category[];

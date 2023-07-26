@@ -2,14 +2,8 @@ import useFetch from 'react-fetch-hook';
 import { Link } from 'preact-router';
 import Carousel from 'react-multi-carousel';
 import Loading from '../UI/Loading';
-
+import { currencyFormatter } from '../../utils/text';
 import 'react-multi-carousel/lib/styles.css';
-
-const currencyFormatter = (number: number) =>
-  new Intl.NumberFormat('uk-UA', {
-    style: 'currency',
-    currency: 'UAH',
-  }).format(number);
 
 const responsive = {
   desktop: {
@@ -43,7 +37,7 @@ const Novelty = () => {
               class='card card-compact w-96 bg-base-100 shadow-xl'
             >
               <figure>
-                <img src={product.images[0]} alt={product.name} />
+                <img src={product.imageCover} alt={product.name} />
               </figure>
               <div class='card-body items-center text-center'>
                 <h2 class='card-title'>{product.name}</h2>

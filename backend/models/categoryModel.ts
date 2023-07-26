@@ -19,10 +19,17 @@ const categorySchema = new mongoose.Schema({
       name: {
         type: String,
         trim: true,
+        toLowerCase: true,
         required: [true, 'Characteristic must have a name'],
       },
       parameters: {
-        type: [String],
+        type: [
+          {
+            type: String,
+            trim: true,
+            toLowerCase: true,
+          },
+        ],
         trim: true,
         required: [true, 'Characteristic must have parameters'],
       },

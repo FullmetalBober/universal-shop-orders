@@ -17,14 +17,14 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Product must have a price'],
   },
+  imageCover: {
+    type: String,
+    trim: true,
+    default: '/images/productDefault.jpg',
+  },
   images: {
-    type: [
-      {
-        type: String,
-        trim: true,
-      },
-    ],
-    default: ['/images/productDefault.jpg'],
+    type: String,
+    trim: true,
   },
   brand: {
     type: String,
