@@ -4,7 +4,7 @@ const img = null;
 
 const Navbar = () => {
   return (
-    <header class='navbar sticky top-0 z-30 mx-auto bg-base-100 md:max-w-[1500px]'>
+    <header class='navbar sticky top-0 z-30 bg-base-100'>
       <div class='navbar-start'>
         <Link href='/' class='btn btn-ghost text-xl normal-case'>
           F5
@@ -12,15 +12,11 @@ const Navbar = () => {
       </div>
       <div class='navbar-center md:w-[650px]'>
         <div class='form-control w-full'>
-          <input
-            type='text'
-            placeholder='Search'
-            class='input input-bordered'
-          />
+          <input type='text' placeholder='Пошук' class='input input-bordered' />
         </div>
       </div>
       <div class='navbar-end gap-2'>
-        <div class='dropdown dropdown-end'>
+        <div class='dropdown-end dropdown'>
           <label
             tabIndex={0}
             class='avatar placeholder btn btn-circle btn-ghost'

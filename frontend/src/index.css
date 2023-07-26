@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  main, header {
+    @apply mx-auto md:max-w-[1500px];
+  }
+}

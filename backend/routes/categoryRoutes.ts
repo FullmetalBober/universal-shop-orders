@@ -5,6 +5,7 @@ import * as categoryController from './../controllers/categoryController';
 const router = express.Router();
 
 router.route('/').get(categoryController.getAllCategories);
+router.route('/slug/:slug').get(categoryController.getCategoryBySlug);
 router.route('/:id').get(categoryController.getCategory);
 
 router.use(authMiddleware.protect);
