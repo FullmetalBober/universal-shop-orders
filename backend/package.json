@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"npm run build\" \"node dist/index.js\"",
-    "dev": "concurrently \"npm run build-watch\" \"nodemon -q dist/index.js\"",
-    "debug": "concurrently \"npm run build-watch\" \"ndb dist/index.js\"",
-    "build": "concurrently \"npx tsc\" \"npm run copy-files\"",
-    "build-watch": "concurrently \"npx tsc --watch\" \"npm run copy-files\"",
+    "start": "npm run build && node dist/index.js",
+    "dev": "npm run build-watch && nodemon -q dist/index.js",
+    "debug": "npm run build-watch && ndb dist/index.js",
+    "build": "npx tsc && npm run copy-files",
+    "build-watch": "npx tsc --watch && npm run copy-files",
     "copy-files": "copyfiles ./views/**/* ./dist"
   },
   "keywords": [],
@@ -49,7 +49,6 @@
     "@types/nodemailer": "^6.4.8",
     "@types/pug": "^2.0.6",
     "@types/validator": "^13.7.17",
-    "concurrently": "^8.2.0",
     "copyfiles": "^2.4.1",
     "nodemon": "^2.0.22",
     "typescript": "^5.1.6"

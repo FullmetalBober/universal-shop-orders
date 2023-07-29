@@ -58,7 +58,7 @@ app.use('/api/v1/products', productRouter);
 app.use('/api/v1/baskets', basketRouter);
 app.use('/api/v1/orders', orderRouter);
 
-//? app.use(express.static(path.join(__dirname, '../frontend/dist')));
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
 const frontendPath = path.join(__dirname, '../frontend/dist');
 
