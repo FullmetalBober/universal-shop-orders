@@ -2,11 +2,11 @@ import { Link } from 'preact-router';
 import { capitalizeFirstLetter } from '../../utils/text';
 // import { useAppSelector } from '../../store';
 
-interface IProps {
+interface Props {
   categories: Category[];
 }
 
-const NavMenu = (props: IProps) => {
+const NavMenu = (props: Props) => {
   const { categories } = props;
   // const categories = useAppSelector(state => state.category.items);
   const menuTypes = [

@@ -1,10 +1,10 @@
 import { currencyFormatter } from '../../utils/text';
 
-interface IProps {
+interface Props {
   products: Product[];
 }
 
-const Products = (props: IProps) => {
+const Products = (props: Props) => {
   const { products } = props;
 
   return (
@@ -12,7 +12,7 @@ const Products = (props: IProps) => {
       {products.map(product => (
         <div class='card card-side my-3 bg-base-100 shadow-xl'>
           <figure>
-            <img src={product.imageCover} alt='Movie' class='w-48' />
+            <img src={product.imageCover} alt='Movie' class='w-56' />
           </figure>
           <div class='card-body'>
             <h2 class='card-title'>{product.name}</h2>

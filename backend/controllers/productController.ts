@@ -1,4 +1,5 @@
 import { RequestHandler } from 'express';
+import AppError from '../utils/appError';
 import Product from '../models/productModel';
 import * as factory from './handlerFactory';
 
@@ -12,13 +13,21 @@ export const deleteProduct = factory.deleteOne(Product);
 
 export const queryParamToFilterObj: RequestHandler = (req, res, next) => {
   if (!req.query[queryParam]) return next();
-  const obj = JSON.parse(req.query[queryParam] as string);
-  const query = {
-    $elemMatch: {
-      $or: obj,
-    },
-  };
-  req.query[queryParam] = query;
+  try {
+    const filter = JSON.parse(req.query[queryParam] as string);
+
+    const query = {
+      $all: filter.map((el: any) => ({
+        $elemMatch: {
+          $or: el,
+        },
+      })),
+    };
+
+    req.query[queryParam] = query;
+  } catch (err) {
+    return next(new AppError('Invalid filter query', 400));
+  }
 
   next();
 };

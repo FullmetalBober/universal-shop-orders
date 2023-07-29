@@ -1,14 +1,21 @@
+import { ChangeEvent } from 'preact/compat';
 import { capitalizeFirstLetter } from '../../utils/text';
 
-interface IProps {
+interface Props {
   category: Category;
+  onFilterChange: (name: string, parameter: string) => void;
 }
 
-const Filter = (props: IProps) => {
+const Filter = (props: Props) => {
   const { category } = props;
 
+  const handleFilterChanged = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.currentTarget;
+    props.onFilterChange(name, value);
+  };
+
   return (
-    <section class='w-[345px]'>
+    <section class='md:w-[345px]'>
       {category &&
         category.characteristics.map(characteristic => (
           <div className='collapse collapse-arrow my-1 border border-base-300 bg-base-200'>
@@ -21,7 +28,13 @@ const Filter = (props: IProps) => {
                 {characteristic.parameters.map(param => (
                   <div className='form-control'>
                     <label className='label cursor-pointer justify-start gap-2'>
-                      <input type='checkbox' className='checkbox checkbox-sm' />
+                      <input
+                        type='checkbox'
+                        name={characteristic.name}
+                        value={param}
+                        onChange={handleFilterChanged}
+                        className='checkbox checkbox-sm'
+                      />
                       <span className='label-text'>
                         {capitalizeFirstLetter(param)}
                       </span>
