@@ -12,12 +12,16 @@ const Products = (props: Props) => {
       {products.map(product => (
         <div class='card card-side my-3 bg-base-100 shadow-xl'>
           <figure>
-            <img src={product.imageCover} alt='Movie' class='w-56' />
+            <img
+              src={product.imageCover}
+              alt='Movie'
+              class='h-full w-56 object-fill'
+            />
           </figure>
           <div class='card-body'>
             <h2 class='card-title'>{product.name}</h2>
             <h3 class='card-title'>{currencyFormatter(product.price)}</h3>
-            <p>
+            <p class='flex flex-wrap gap-1'>
               {product.characteristics.map(characteristic => (
                 <div class='badge badge-outline'>
                   {characteristic.parameter}
