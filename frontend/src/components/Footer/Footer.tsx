@@ -4,7 +4,9 @@ const Footer = () => {
   return (
     <footer class='footer bg-base-200 p-10 text-base-content'>
       <div>
-        <Link class='btn btn-ghost text-4xl normal-case'>F5</Link>
+        <Link href='/' class='btn btn-ghost text-4xl normal-case'>
+          F5
+        </Link>
       </div>
       <div>
         <span class='footer-title'>Телеграм</span>

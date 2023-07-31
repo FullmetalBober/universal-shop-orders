@@ -1,19 +1,16 @@
-import useFetch from 'react-fetch-hook';
 import Map from './Map';
 import NavMenu from './NavMenu';
 import Novelty from './Novelty';
 import Loading from '../UI/Loading';
+import { useAppSelector } from '../../store';
 
 const Home = () => {
-  const { isLoading: categoriesLoading, data: categoriesResponse } = useFetch<
-    Response<Category[]>
-  >('/api/v1/categories?sort=menuType,name');
-  const categoriesData = categoriesResponse?.data.data;
+  const { isLoading, categories } = useAppSelector(state => state.category);
 
   return (
     <main>
-      {categoriesLoading && <Loading />}
-      {categoriesData && <NavMenu categories={categoriesData} />}
+      {isLoading && <Loading />}
+      {!isLoading && <NavMenu categories={categories} />}
       <Novelty />
       <Map />
     </main>

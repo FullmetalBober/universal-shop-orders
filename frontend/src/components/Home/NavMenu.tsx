@@ -1,6 +1,5 @@
 import { Link } from 'preact-router';
 import { capitalizeFirstLetter } from '../../utils/text';
-// import { useAppSelector } from '../../store';
 
 interface Props {
   categories: Category[];
@@ -8,7 +7,6 @@ interface Props {
 
 const NavMenu = (props: Props) => {
   const { categories } = props;
-  // const categories = useAppSelector(state => state.category.items);
   const menuTypes = [
     ...new Set(
       categories.map(category => capitalizeFirstLetter(category.menuType))
@@ -29,7 +27,7 @@ const NavMenu = (props: Props) => {
                 .filter(category => category.menuType === type.toLowerCase())
                 .map(category => (
                   <li>
-                    <Link href={`category/${category.slug}`}>
+                    <Link href={`/category/${category.slug}`}>
                       {category.name}
                     </Link>
                   </li>

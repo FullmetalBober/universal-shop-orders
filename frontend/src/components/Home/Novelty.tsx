@@ -32,8 +32,8 @@ const Novelty = () => {
         <Carousel responsive={responsive} showDots={true} infinite={true}>
           {products.map(product => (
             <Link
+              href={`/product/${product.slug}`}
               key={product._id}
-              href={`product/${product.slug}`}
               class='card card-compact w-96 bg-base-100 shadow-xl'
             >
               <figure>

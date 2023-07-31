@@ -4,17 +4,22 @@ import { fetchCategoryData } from './category-actions';
 const categorySlice = createSlice({
   name: 'category',
   initialState: {
-    items: [] as Category[],
+    categories: [] as Category[],
+    isLoading: false,
   },
   reducers: {
     replaceCategories(state, action) {
-      state.items = action.payload;
+      state.categories = action.payload;
     },
   },
   extraReducers: builder => {
+    builder.addCase(fetchCategoryData.pending, state => {
+      state.isLoading = true;
+    });
     builder.addCase(fetchCategoryData.fulfilled, (state, action) => {
-      if (action.payload.status === 'success')
-        state.items = action.payload.data.data;
+      if (action.payload && action.payload.status === 'success')
+        state.categories = action.payload.data.data;
+      state.isLoading = false;
     });
   },
 });

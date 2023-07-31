@@ -3,6 +3,7 @@ import Loading from '../UI/Loading';
 import Filter from './Filter';
 import Products from './Products';
 import { useState } from 'preact/hooks';
+import { useAppSelector } from '../../store';
 
 interface Props {
   categorySlug: string;
@@ -26,10 +27,10 @@ const Category = ({ categorySlug }: Props) => {
 
   const filterJson = JSON.stringify(arrayFilters);
 
-  const { isLoading: categoryIsLoading, data: categoryData } = useFetch<
-    Response<Category>
-  >(`/api/v1/categories/slug/${categorySlug}`);
-  const category = categoryData?.data.data;
+  const { isLoading: categoriesIsLoading, categories } = useAppSelector(
+    state => state.category
+  );
+  const category = categories.find(category => category.slug === categorySlug);
 
   let queryParams = new URLSearchParams([]);
   if (filter.length > 0) queryParams.append('characteristics', filterJson);
@@ -54,7 +55,7 @@ const Category = ({ categorySlug }: Props) => {
     });
   };
 
-  if (categoryIsLoading) return <Loading />;
+  if (categoriesIsLoading) return <Loading />;
   return (
     <main class='my-2 gap-3 md:flex'>
       <Filter category={category!} onFilterChange={onFilterChange} />
