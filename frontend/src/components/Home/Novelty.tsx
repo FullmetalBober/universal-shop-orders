@@ -37,11 +37,7 @@ const Novelty = () => {
               class='card card-compact w-96 bg-base-100 shadow-xl'
             >
               <figure>
-                <img
-                  src={product.imageCover}
-                  alt={product.name}
-                  class='h-full w-56 object-fill'
-                />
+                <img src={product.imageCover} alt={product.name} />
               </figure>
               <div class='card-body items-center text-center'>
                 <h2 class='card-title'>{product.name}</h2>

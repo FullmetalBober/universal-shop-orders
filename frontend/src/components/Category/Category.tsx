@@ -24,8 +24,6 @@ const Category = (props: Props) => {
   let page: string | number = matches.page || '1';
   const [filter, setFilter] = useState<Filter[]>([]);
 
-  const pageChangeHref = `/category/${categorySlug}`;
-
   // split filter array into array of arrays with same name
   const arrayFilters = filter.reduce((acc, el) => {
     const { name, parameter } = el;
@@ -81,22 +79,25 @@ const Category = (props: Props) => {
     });
   };
 
+  const pageChangeHref = `/category/${categorySlug}`;
   const totalPages = Math.ceil(productCount! / +limit);
   page = +page;
   if (categoriesIsLoading) return <Loading />;
   return (
     <main class='my-2 gap-3 md:flex'>
       <Filter category={category!} onFilterChange={onFilterChange} />
-      {productsIsLoading && <Loading />}
-      {products && <Products products={products} />}
-      {productCountIsLoading && <Loading />}
-      {productCount && (
-        <Pagination
-          totalPages={totalPages}
-          page={page}
-          pageChangeHref={pageChangeHref}
-        />
-      )}
+      <div class='grow'>
+        {productsIsLoading && <Loading />}
+        {products && <Products products={products} />}
+        {productCountIsLoading && <Loading />}
+        {productCount && (
+          <Pagination
+            totalPages={totalPages}
+            currentPage={page}
+            pageChangeHref={pageChangeHref}
+          />
+        )}
+      </div>
     </main>
   );
 };

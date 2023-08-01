@@ -8,7 +8,7 @@ const Products = (props: Props) => {
   const { products } = props;
 
   return (
-    <section class='grow'>
+    <section>
       {products.map(product => (
         <div class='card card-side my-3 bg-base-100 shadow-xl'>
           <figure>

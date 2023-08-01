@@ -1,11 +1,52 @@
+import { Link } from 'preact-router';
+
+const length = 2;
+const replace = '...';
+
 interface Props {
   totalPages: number;
-  page: number;
+  currentPage: number;
   pageChangeHref: string;
 }
 
 const Pagination = (props: Props) => {
-  return <div>Pagination</div>;
+  const { totalPages, pageChangeHref } = props;
+  let { currentPage } = props;
+  if (totalPages === 1) return <></>;
+
+  const pages = Array.from({ length: totalPages }, (_, i) =>
+    (i + 1).toString()
+  );
+
+  if (currentPage < 1) currentPage = 1;
+  if (currentPage > totalPages) currentPage = totalPages;
+
+  if (currentPage + length < totalPages)
+    pages.splice(
+      currentPage + length,
+      totalPages - currentPage - length - 1,
+      replace
+    );
+  if (currentPage - length > 1)
+    pages.splice(1, currentPage - length * 2, replace);
+
+  const linkClass = (page: string) => {
+    if (page === replace) return 'btn join-item btn-disabled';
+    if (page === currentPage.toString()) return 'btn join-item btn-active';
+    return 'btn join-item';
+  };
+
+  return (
+    <aside class='flex justify-center'>
+      <nav class='join'>
+        {pages.map(page => (
+          <Link href={`${pageChangeHref}?page=${page}`} class={linkClass(page)}>
+            {page}
+          </Link>
+        ))}
+      </nav>
+    </aside>
+  );
 };
 
 export default Pagination;
