@@ -4,9 +4,14 @@ import * as productController from './../controllers/productController';
 
 const router = express.Router();
 
+router.route('/count').get(productController.countProducts);
+
 router
   .route('/')
-  .get(productController.queryParamToFilterObj, productController.getAllProducts);
+  .get(
+    productController.queryParamToFilterObj,
+    productController.getAllProducts
+  );
 router.route('/:id').get(productController.getProduct);
 
 router.use(authMiddleware.protect);

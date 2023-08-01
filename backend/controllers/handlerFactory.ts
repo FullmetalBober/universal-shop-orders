@@ -112,3 +112,20 @@ export const getAll =
       },
     });
   };
+
+export const getCount =
+  (Model: Model<any>): RequestHandler =>
+  async (req, res, next) => {
+    let query = Model.find();
+
+    const features = new APIFeatures(query, req.query).filter();
+
+    const docs = await features.query.countDocuments();
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        data: docs,
+      },
+    });
+  };
