@@ -22,10 +22,12 @@ const productSchema = new mongoose.Schema({
     trim: true,
     default: '/images/productDefault.jpg',
   },
-  images: {
-    type: String,
-    trim: true,
-  },
+  images: [
+    {
+      type: String,
+      trim: true,
+    },
+  ],
   brand: {
     type: String,
     trim: true,

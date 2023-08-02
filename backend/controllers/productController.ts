@@ -7,6 +7,7 @@ const queryParam = 'characteristics';
 
 export const getAllProducts = factory.getAll(Product);
 export const getProduct = factory.getOne(Product);
+export const getProductBySlug = factory.getOneBySlug(Product);
 export const createProduct = factory.createOne(Product);
 export const updateProduct = factory.updateOne(Product);
 export const deleteProduct = factory.deleteOne(Product);

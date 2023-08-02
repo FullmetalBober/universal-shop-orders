@@ -12,6 +12,8 @@ router
     productController.queryParamToFilterObj,
     productController.getAllProducts
   );
+  router.route('/slug/:slug').get(productController.getProductBySlug);
+
 router.route('/:id').get(productController.getProduct);
 
 router.use(authMiddleware.protect);
