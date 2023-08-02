@@ -3,7 +3,20 @@
 @tailwind utilities;
 
 @layer base {
-  main, header {
+  #app {
+    @apply flex min-h-screen flex-col;
+  }
+
+  main {
+    @apply w-full;
+  }
+
+  footer {
+    @apply mt-auto;
+  }
+
+  main,
+  header {
     @apply mx-auto md:max-w-[1500px];
   }
 }

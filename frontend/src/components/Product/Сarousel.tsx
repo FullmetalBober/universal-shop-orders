@@ -2,8 +2,10 @@ interface Props {
   images: string[];
 }
 
-const Carousel =(props: Props) => {
-  return <section></section>
-}
+const Carousel = (props: Props) => {
+  const { images } = props;
 
-export default Carousel
+  return <img src={images[0]} className='max-w-sm rounded-lg shadow-2xl' />;
+};
+
+export default Carousel;

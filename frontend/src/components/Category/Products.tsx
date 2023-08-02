@@ -1,5 +1,6 @@
 import { Link } from 'preact-router';
 import { currencyFormatter } from '../../utils/text';
+import ProductInfo from '../UI/ProductInfo';
 
 interface Props {
   products: Product[];
@@ -7,10 +8,6 @@ interface Props {
 
 const setHref = (slug: string) => {
   return `/product/${slug}`;
-};
-
-const productId = (id: string) => {
-  return id.slice(0, 8);
 };
 
 const Products = (props: Props) => {
@@ -30,16 +27,12 @@ const Products = (props: Props) => {
               <Link href={setHref(product.slug)}>{product.name}</Link>
             </h2>
             <h3 class='card-title'>{currencyFormatter(product.price)}</h3>
-            <p class='flex flex-wrap gap-1'>
-              <div class='badge badge-outline'>
-                ID: {productId(product._id)}
-              </div>
-              {product.characteristics.map(characteristic => (
-                <div class='badge badge-outline'>
-                  {characteristic.parameter}
-                </div>
-              ))}
-            </p>
+            {
+              <ProductInfo
+                _id={product._id}
+                parameters={product.characteristics}
+              />
+            }
             <div class='card-actions justify-end'>
               <button class='btn btn-primary'>У кошик</button>
             </div>
