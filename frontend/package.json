@@ -12,6 +12,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "preact": "^10.15.1",
     "preact-router": "^4.1.1",
+    "react-auth-kit": "^2.12.5",
     "react-fetch-hook": "^1.9.5",
     "react-multi-carousel": "^2.8.4",
     "react-redux": "^8.1.1"
