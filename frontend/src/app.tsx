@@ -7,6 +7,7 @@ import { fetchCategoryData } from './store/category-actions';
 import Footer from './components/Footer/Footer';
 import Category from './components/Category/Category';
 import Product from './components/Product/Product';
+import 'react-multi-carousel/lib/styles.css';
 import './app.css';
 
 export function App() {

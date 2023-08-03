@@ -1,9 +1,8 @@
-import useFetch from 'react-fetch-hook';
 import { Link } from 'preact-router';
+import useFetch from 'react-fetch-hook';
 import Carousel from 'react-multi-carousel';
 import Loading from '../UI/Loading';
 import { currencyFormatter } from '../../utils/text';
-import 'react-multi-carousel/lib/styles.css';
 
 const responsive = {
   desktop: {
@@ -21,20 +20,22 @@ const responsive = {
 };
 
 const Novelty = () => {
-  const { isLoading, data } = useFetch<any>('/api/v1/products?limit=20');
-  const products: Product[] = data?.data.data;
+  const { isLoading, data } = useFetch<Response<Product[]>>(
+    '/api/v1/products?limit=20'
+  );
+  const products = data?.data.data;
 
   return (
     <section>
       <h1 class='card-title text-2xl'>Новинка</h1>
       {isLoading && <Loading />}
       {products && (
-        <Carousel responsive={responsive} showDots={true} infinite={true}>
+        <Carousel responsive={responsive} arrows autoPlay showDots infinite>
           {products.map(product => (
             <Link
               href={`/product/${product.slug}`}
               key={product._id}
-              class='card card-compact w-96 bg-base-100 shadow-xl'
+              class='xs:max-w-xs card card-compact bg-base-100 shadow-xl'
             >
               <figure>
                 <img src={product.imageCover} alt={product.name} />

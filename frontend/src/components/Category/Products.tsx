@@ -16,7 +16,7 @@ const Products = (props: Props) => {
   return (
     <section>
       {products.map(product => (
-        <div class='card card-side my-3 bg-base-100 shadow-xl'>
+        <div class='card card-side card-compact my-3 bg-base-100 shadow-xl md:card-normal'>
           <figure>
             <Link href={setHref(product.slug)} class='flex items-center'>
               <img src={product.imageCover} alt='Movie' class='w-32 md:w-56' />

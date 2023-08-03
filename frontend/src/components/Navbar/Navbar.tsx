@@ -16,7 +16,7 @@ const Navbar = () => {
         </div>
       </div>
       <div class='navbar-end gap-2'>
-        <div class='dropdown-end dropdown'>
+        <div class='dropdown dropdown-end'>
           <label
             tabIndex={0}
             class='avatar placeholder btn btn-circle btn-ghost'

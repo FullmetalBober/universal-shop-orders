@@ -1,7 +1,8 @@
 import useFetch from 'react-fetch-hook';
-import Carousel from './Сarousel';
+import Gallery from './Gallery';
 import Loading from '../UI/Loading';
 import ProductInfo from '../UI/ProductInfo';
+import { currencyFormatter } from '../../utils/text';
 
 const defaultImg = '/images/productDefault.jpg';
 
@@ -25,9 +26,10 @@ const Product = (props: Props) => {
   return (
     <main class='hero justify-items-start bg-base-200'>
       <div class='hero-content flex-col justify-items-start lg:flex-row'>
-        {product && <Carousel images={imgs} />}
+        {product && <Gallery images={imgs} />}
         <div>
           <h1 class='text-5xl font-bold'>{product.name}</h1>
+          <h2 class='text-4xl font-bold'>{currencyFormatter(product.price)}</h2>
           {
             <ProductInfo
               _id={product._id}

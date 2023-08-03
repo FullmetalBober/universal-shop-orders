@@ -14,7 +14,7 @@ const NavMenu = (props: Props) => {
   ];
 
   return (
-    <nav className='navbar bg-base-100'>
+    <nav className='navbar -mt-2 bg-base-100'>
       <div className='navbar-start' />
       <div class='navbar-center tabs'>
         {menuTypes.map(type => (
