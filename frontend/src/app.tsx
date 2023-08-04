@@ -8,7 +8,7 @@ import { fetchCategoryData } from './store/category-actions';
 import Footer from './components/Footer/Footer';
 import Category from './components/Category/Category';
 import Product from './components/Product/Product';
-import Authentication from './components/Authentication/Authentication';
+import Login from './components/Authentication/Login';
 import 'react-multi-carousel/lib/styles.css';
 import './app.css';
 
@@ -26,7 +26,7 @@ export function App() {
         <Route path='/' component={Home} />
         <Route path='/category/:categorySlug' component={Category} />
         <Route path='/product/:productSlug' component={Product} />
-        <Route path='/auth' component={Authentication} />
+        <Route path='/auth/login' component={Login} />
         <Route default component={notFound} />
       </Router>
       <Footer />

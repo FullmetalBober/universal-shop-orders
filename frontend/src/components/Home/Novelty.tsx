@@ -30,15 +30,26 @@ const Novelty = () => {
       <h1 class='card-title text-2xl'>Новинка</h1>
       {isLoading && <Loading />}
       {products && (
-        <Carousel responsive={responsive} arrows autoPlay showDots infinite>
+        <Carousel
+          responsive={responsive}
+          arrows
+          autoPlay
+          showDots
+          infinite
+          containerClass='shadow-xl rounded-lg'
+        >
           {products.map(product => (
             <Link
               href={`/product/${product.slug}`}
               key={product._id}
-              class='xs:max-w-xs card card-compact bg-base-100 shadow-xl'
+              class='xs:max-w-xs card card-compact bg-base-100'
             >
               <figure>
-                <img src={product.imageCover} alt={product.name} />
+                <img
+                  src={product.imageCover}
+                  alt={product.name}
+                  class='rounded-lg'
+                />
               </figure>
               <div class='card-body items-center text-center'>
                 <h2 class='card-title'>{product.name}</h2>

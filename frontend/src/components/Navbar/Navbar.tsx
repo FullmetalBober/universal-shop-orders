@@ -19,7 +19,7 @@ const Navbar = () => {
       </div>
       <div class='navbar-end gap-2'>
         {!isAuthenticated() && (
-          <Link href='/auth' className='btn'>
+          <Link href='/auth/login' className='btn'>
             Увійти
           </Link>
         )}
