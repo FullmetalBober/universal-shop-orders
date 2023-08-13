@@ -1,6 +1,5 @@
 import { useEffect } from 'preact/hooks';
-import { Route, Router } from 'preact-router';
-import { AuthProvider } from 'react-auth-kit';
+import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home/Home';
 import Navbar from './components/Navbar/Navbar';
 import { useAppDispatch } from './store';
@@ -20,18 +19,18 @@ export function App() {
   }, [dispatch]);
 
   return (
-    <AuthProvider authType={'cookie'} authName={'_auth'} cookieSecure>
+    <>
       <Navbar />
-      <Router>
-        <Route path='/' component={Home} />
-        <Route path='/category/:categorySlug' component={Category} />
-        <Route path='/product/:productSlug' component={Product} />
-        <Route path='/auth/login' component={Login} />
-        <Route default component={notFound} />
-      </Router>
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/category/:categorySlug' element={<Category />} />
+        <Route path='/product/:productSlug' element={<Product />} />
+        <Route path='/auth/login' element={<Login />} />
+        <Route path='*' element={<NotFound />} />
+      </Routes>
       <Footer />
-    </AuthProvider>
+    </>
   );
 }
 
-const notFound = () => <div>404</div>;
+const NotFound = () => <div>404</div>;

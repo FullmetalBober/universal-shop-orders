@@ -14,11 +14,11 @@
     "axios-hooks": "^4.0.0",
     "email-validator": "^2.0.4",
     "preact": "^10.15.1",
-    "preact-router": "^4.1.1",
     "react-auth-kit": "^2.12.5",
     "react-hook-form": "^7.45.4",
     "react-multi-carousel": "^2.8.4",
-    "react-redux": "^8.1.1"
+    "react-redux": "^8.1.1",
+    "react-router-dom": "^6.15.0"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.5.0",

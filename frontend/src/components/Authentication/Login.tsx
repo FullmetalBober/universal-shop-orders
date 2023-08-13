@@ -1,4 +1,4 @@
-import { Link } from 'preact-router';
+import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler, UseFormProps } from 'react-hook-form';
 import useAxios from 'axios-hooks';
 import * as EmailValidator from 'email-validator';
@@ -26,6 +26,7 @@ const Login = () => {
     },
     { manual: true }
   );
+  console.log(userData, loading, error); //! remove
 
   const {
     register,
@@ -55,44 +56,44 @@ const Login = () => {
         description={
           <>
             Якщо у вас ще немає облікового запису, ви можете{' '}
-            <Link href='/auth/register' className='link link-primary font-bold'>
+            <Link to='/auth/register' class='link-primary link font-bold'>
               зареєструватися
             </Link>
             .
           </>
         }
       >
-        <div className='form-control'>
-          <label for='email' className='label'>
-            <span className='label-text'>Email</span>
+        <div class='form-control'>
+          <label for='email' class='label'>
+            <span class='label-text'>Email</span>
           </label>
           <input
             type='email'
             id='email'
             placeholder='email'
-            className={inputClass(!!errors.email)}
+            class={inputClass(!!errors.email)}
             {...registers.email}
           />
         </div>
-        <div className='form-control'>
-          <label for='password' className='label'>
-            <span className='label-text'>Пароль</span>
+        <div class='form-control'>
+          <label for='password' class='label'>
+            <span class='label-text'>Пароль</span>
           </label>
           <input
             type='password'
             id='password'
             placeholder='password'
-            className={inputClass(!!errors.password)}
+            class={inputClass(!!errors.password)}
             {...registers.password}
           />
-          <label className='label'>
-            <Link href='/auth/reset' className='link-hover link label-text-alt'>
+          <label class='label'>
+            <Link to='/auth/reset' class='link-hover link label-text-alt'>
               Забули пароль?
             </Link>
           </label>
         </div>
-        <div className='form-control mt-6'>
-          <button disabled={!isValid} className='btn btn-primary'>
+        <div class='form-control mt-6'>
+          <button disabled={!isValid} class='btn btn-primary'>
             Увійти
           </button>
         </div>

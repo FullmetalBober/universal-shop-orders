@@ -1,3 +1,4 @@
+import { useParams } from 'react-router-dom';
 import useAxios from 'axios-hooks';
 import Gallery from './Gallery';
 import Loading from '../UI/Loading';
@@ -6,12 +7,8 @@ import { currencyFormatter } from '../../utils/text';
 
 const defaultImg = '/images/productDefault.jpg';
 
-interface Props {
-  productSlug: string;
-}
-
-const Product = (props: Props) => {
-  const { productSlug } = props;
+const Product = () => {
+  const { productSlug } = useParams();
 
   const [{ data: productData, loading: productIsLoading }] = useAxios<
     Response<Product>

@@ -1,4 +1,4 @@
-import { Link } from 'preact-router';
+import { Link } from 'react-router-dom';
 import useAxios from 'axios-hooks';
 import Carousel from 'react-multi-carousel';
 import Loading from '../UI/Loading';
@@ -41,8 +41,7 @@ const Novelty = () => {
         >
           {products.map(product => (
             <Link
-              href={`/product/${product.slug}`}
-              key={product._id}
+              to={`/product/${product.slug}`}
               class='xs:max-w-xs card card-compact bg-base-100'
             >
               <figure>

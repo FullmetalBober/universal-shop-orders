@@ -1,4 +1,4 @@
-import { Link } from 'preact-router';
+import { Link } from 'react-router-dom';
 
 const length = 2;
 const replace = '...';
@@ -40,7 +40,7 @@ const Pagination = (props: Props) => {
     <aside class='flex justify-center'>
       <nav class='join'>
         {pages.map(page => (
-          <Link href={`${pageChangeHref}?page=${page}`} class={linkClass(page)}>
+          <Link to={`${pageChangeHref}?page=${page}`} class={linkClass(page)}>
             {page}
           </Link>
         ))}

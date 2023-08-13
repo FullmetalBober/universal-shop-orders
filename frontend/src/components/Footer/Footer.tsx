@@ -1,10 +1,10 @@
-import { Link } from 'preact-router';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
     <footer class='footer bg-base-200 p-10 text-base-content'>
       <div>
-        <Link href='/' class='btn btn-ghost text-4xl normal-case'>
+        <Link to='/' class='btn btn-ghost text-4xl normal-case'>
           F5
         </Link>
       </div>

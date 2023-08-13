@@ -1,3 +1,4 @@
+import { useParams, useSearchParams } from 'react-router-dom';
 import useAxios from 'axios-hooks';
 import { useState } from 'preact/hooks';
 import Loading from '../UI/Loading';
@@ -7,21 +8,16 @@ import Pagination from './Pagination';
 import { useAppSelector } from '../../store';
 
 const limit = '15';
-interface Props {
-  categorySlug: string;
-  matches: {
-    page: string;
-  };
-}
 
 interface Filter {
   name: string;
   parameter: string;
 }
 
-const Category = (props: Props) => {
-  const { matches, categorySlug } = props;
-  let page: string | number = matches.page || '1';
+const Category = () => {
+  const { categorySlug } = useParams();
+  const [searchParams] = useSearchParams();
+  let page: string | number = searchParams.get('page') || '1';
   const [filter, setFilter] = useState<Filter[]>([]);
 
   // split filter array into array of arrays with same name

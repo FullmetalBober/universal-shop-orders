@@ -1,4 +1,4 @@
-import { Link } from 'preact-router';
+import { Link } from 'react-router-dom';
 import { useIsAuthenticated } from 'react-auth-kit';
 import UserMenu from './UserMenu';
 
@@ -8,7 +8,7 @@ const Navbar = () => {
   return (
     <header class='navbar sticky top-0 z-30 bg-base-100'>
       <div class='navbar-start'>
-        <Link href='/' class='btn btn-ghost text-xl normal-case'>
+        <Link to='/' class='btn btn-ghost text-xl normal-case'>
           F5
         </Link>
       </div>
@@ -19,7 +19,7 @@ const Navbar = () => {
       </div>
       <div class='navbar-end gap-2'>
         {!isAuthenticated() && (
-          <Link href='/auth/login' className='btn'>
+          <Link to='/auth/login' className='btn'>
             Увійти
           </Link>
         )}

@@ -1,4 +1,4 @@
-import { Link } from 'preact-router';
+import { Link } from 'react-router-dom';
 import { capitalizeFirstLetter } from '../../utils/text';
 
 interface Props {
@@ -29,7 +29,7 @@ const NavMenu = (props: Props) => {
                 .filter(category => category.menuType === type.toLowerCase())
                 .map(category => (
                   <li>
-                    <Link href={`/category/${category.slug}`}>
+                    <Link to={`/category/${category.slug}`}>
                       {category.name}
                     </Link>
                   </li>

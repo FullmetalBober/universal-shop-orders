@@ -1,4 +1,4 @@
-import { Link } from 'preact-router';
+import { Link } from 'react-router-dom';
 import { currencyFormatter } from '../../utils/text';
 import ProductInfo from '../UI/ProductInfo';
 
@@ -18,13 +18,13 @@ const Products = (props: Props) => {
       {products.map(product => (
         <div class='card card-side card-compact my-3 bg-base-100 shadow-xl md:card-normal'>
           <figure>
-            <Link href={setHref(product.slug)} class='flex items-center'>
+            <Link to={setHref(product.slug)} class='flex items-center'>
               <img src={product.imageCover} alt='Movie' class='w-32 md:w-56' />
             </Link>
           </figure>
           <div class='card-body'>
             <h2 class='card-title'>
-              <Link href={setHref(product.slug)}>{product.name}</Link>
+              <Link to={setHref(product.slug)}>{product.name}</Link>
             </h2>
             <h3 class='card-title'>{currencyFormatter(product.price)}</h3>
             {
