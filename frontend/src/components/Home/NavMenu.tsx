@@ -14,15 +14,17 @@ const NavMenu = (props: Props) => {
   ];
 
   return (
-    <nav className='navbar -mt-2 bg-base-100'>
-      <div className='navbar-start' />
-      <div class='navbar-center tabs'>
+    <nav class='navbar -mt-2 justify-center bg-base-100'>
+      <ul class='flex-wrap'>
         {menuTypes.map(type => (
-          <ul key={type} class='dropdown dropdown-hover'>
-            <li tabIndex={0}>
-              <a class='tab tab-bordered tab-lg hover:tab-active'>{type}</a>
-            </li>
-            <ul tabIndex={0} className='menu dropdown-content menu-lg z-10'>
+          <li tabIndex={0} class='group dropdown dropdown-hover'>
+            <label class='btn btn-ghost rounded-btn btn-lg group-hover:btn-active group-focus:btn-active'>
+              {type}
+            </label>
+            <ul
+              tabIndex={0}
+              class='menu dropdown-content rounded-box menu-lg z-10 w-52 bg-base-100 p-2 shadow'
+            >
               {categories
                 .filter(category => category.menuType === type.toLowerCase())
                 .map(category => (
@@ -33,10 +35,9 @@ const NavMenu = (props: Props) => {
                   </li>
                 ))}
             </ul>
-          </ul>
+          </li>
         ))}
-      </div>
-      <div className='navbar-end' />
+      </ul>
     </nav>
   );
 };

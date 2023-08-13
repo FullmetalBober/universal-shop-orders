@@ -2,8 +2,8 @@ const Map = () => {
   const API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
   return (
-    <section class='w-full my-2'>
-      <div class='card mx-auto w-[350px] md:w-[500px] bg-base-100 shadow-xl'>
+    <section class='my-2'>
+      <div class='card mx-auto w-full sm:w-[500px] bg-base-100 shadow-xl'>
         <div class='card-body'>
           <h1 class='card-title mx-auto'>Як нас знайти</h1>
         </div>

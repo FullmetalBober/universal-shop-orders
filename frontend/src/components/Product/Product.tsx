@@ -1,4 +1,4 @@
-import useFetch from 'react-fetch-hook';
+import useAxios from 'axios-hooks';
 import Gallery from './Gallery';
 import Loading from '../UI/Loading';
 import ProductInfo from '../UI/ProductInfo';
@@ -13,9 +13,11 @@ interface Props {
 const Product = (props: Props) => {
   const { productSlug } = props;
 
-  const { data: productData, isLoading: productIsLoading } = useFetch<
+  const [{ data: productData, loading: productIsLoading }] = useAxios<
     Response<Product>
-  >(`/api/v1/products/slug/${productSlug}`);
+  >({
+    url: `/api/v1/products/slug/${productSlug}`,
+  });
   const product = productData?.data.data;
 
   let imgs = [defaultImg];

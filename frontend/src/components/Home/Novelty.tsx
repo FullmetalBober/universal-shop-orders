@@ -1,5 +1,5 @@
 import { Link } from 'preact-router';
-import useFetch from 'react-fetch-hook';
+import useAxios from 'axios-hooks';
 import Carousel from 'react-multi-carousel';
 import Loading from '../UI/Loading';
 import { currencyFormatter } from '../../utils/text';
@@ -20,9 +20,10 @@ const responsive = {
 };
 
 const Novelty = () => {
-  const { isLoading, data } = useFetch<Response<Product[]>>(
-    '/api/v1/products?limit=20'
-  );
+  const [{ data, loading: isLoading }] = useAxios<Response<Product[]>>({
+    url: '/api/v1/products',
+    params: { limit: 20 },
+  });
   const products = data?.data.data;
 
   return (

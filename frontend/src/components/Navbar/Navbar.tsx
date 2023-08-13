@@ -12,7 +12,7 @@ const Navbar = () => {
           F5
         </Link>
       </div>
-      <div class='navbar-center md:w-[650px]'>
+      <div class='navbar-center w-1/2'>
         <div class='form-control w-full'>
           <input type='text' placeholder='Пошук' class='input input-bordered' />
         </div>

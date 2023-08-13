@@ -1,5 +1,6 @@
 import { Link } from 'preact-router';
 import { useForm, SubmitHandler, UseFormProps } from 'react-hook-form';
+import useAxios from 'axios-hooks';
 import * as EmailValidator from 'email-validator';
 import AuthTemplateForm from './AuthTemplateForm';
 
@@ -18,6 +19,14 @@ const useFormParams: UseFormProps<Inputs> = {
 };
 
 const Login = () => {
+  const [{ data: userData, loading, error }, executePost] = useAxios(
+    {
+      url: '/api/v1/users/login',
+      method: 'POST',
+    },
+    { manual: true }
+  );
+
   const {
     register,
     handleSubmit,
@@ -33,7 +42,10 @@ const Login = () => {
     password: register('password', { required: true, minLength: 8 }),
   };
 
-  const onSubmit: SubmitHandler<Inputs> = data => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async data => {
+    await executePost({ data });
+    console.log(userData);
+  };
 
   return (
     <main>
@@ -43,7 +55,7 @@ const Login = () => {
         description={
           <>
             Якщо у вас ще немає облікового запису, ви можете{' '}
-            <Link href='/auth/register' className='link'>
+            <Link href='/auth/register' className='link link-primary font-bold'>
               зареєструватися
             </Link>
             .

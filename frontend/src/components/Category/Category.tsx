@@ -1,4 +1,4 @@
-import useFetch from 'react-fetch-hook';
+import useAxios from 'axios-hooks';
 import { useState } from 'preact/hooks';
 import Loading from '../UI/Loading';
 import Filter from './Filter';
@@ -45,11 +45,9 @@ const Category = (props: Props) => {
   if (category?._id) queryParams.append('category', category._id);
 
   // fetch product count
-  const { isLoading: productCountIsLoading, data: productCountData } = useFetch<
+  const [{ data: productCountData, loading: productCountIsLoading }] = useAxios<
     Response<number>
-  >(`/api/v1/products/count?${queryParams}`, {
-    depends: [category?._id],
-  });
+  >(`/api/v1/products/count?${queryParams}`, { manual: !category });
   const productCount = productCountData?.data.data;
 
   // add another params to query params
@@ -58,11 +56,9 @@ const Category = (props: Props) => {
   queryParams.append('limit', limit);
 
   // fetch products
-  const { isLoading: productsIsLoading, data: productsData } = useFetch<
+  const [{ data: productsData, loading: productsIsLoading }] = useAxios<
     Response<Product[]>
-  >(`/api/v1/products?${queryParams}`, {
-    depends: [category?._id],
-  });
+  >(`/api/v1/products?${queryParams}`, { manual: !category });
   const products = productsData?.data.data;
 
   // handle filter change
@@ -87,10 +83,9 @@ const Category = (props: Props) => {
     <main class='my-2 gap-3 md:flex'>
       <Filter category={category!} onFilterChange={onFilterChange} />
       <div class='grow'>
-        {productsIsLoading && <Loading />}
+        {(productsIsLoading || productCountIsLoading) && <Loading />}
         {products && <Products products={products} />}
-        {productCountIsLoading && <Loading />}
-        {productCount && (
+        {!!productCount && (
           <Pagination
             totalPages={totalPages}
             currentPage={page}
