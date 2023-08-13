@@ -42,6 +42,7 @@ const Novelty = () => {
           {products.map(product => (
             <Link
               to={`/product/${product.slug}`}
+              key={product._id}
               class='xs:max-w-xs card card-compact bg-base-100'
             >
               <figure>

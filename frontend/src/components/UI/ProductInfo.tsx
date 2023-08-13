@@ -2,6 +2,7 @@ interface Props {
   class?: string;
   _id: string;
   parameters: {
+    _id: string;
     name: string;
     parameter: string;
   }[];
@@ -19,7 +20,9 @@ const ProductInfo = (props: Props) => {
     <p class={wrapperClass}>
       <div class='badge badge-outline'>ID: {productId(_id)}</div>
       {parameters.map(characteristic => (
-        <div class='badge badge-outline'>{characteristic.parameter}</div>
+        <div key={characteristic._id} class='badge badge-outline'>
+          {characteristic.parameter}
+        </div>
       ))}
     </p>
   );

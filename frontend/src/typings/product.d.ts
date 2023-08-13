@@ -9,6 +9,7 @@ declare interface Product {
   stock: number;
   characteristics:
     | {
+        _id: string;
         name: string;
         parameter: string;
       }[]

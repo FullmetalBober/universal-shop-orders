@@ -17,7 +17,7 @@ const NavMenu = (props: Props) => {
     <nav class='navbar -mt-2 justify-center bg-base-100'>
       <ul class='flex-wrap'>
         {menuTypes.map(type => (
-          <li tabIndex={0} class='group dropdown dropdown-hover'>
+          <li key={type} tabIndex={0} class='group dropdown dropdown-hover'>
             <label class='btn btn-ghost rounded-btn btn-lg group-hover:btn-active group-focus:btn-active'>
               {type}
             </label>
@@ -28,7 +28,7 @@ const NavMenu = (props: Props) => {
               {categories
                 .filter(category => category.menuType === type.toLowerCase())
                 .map(category => (
-                  <li>
+                  <li key={category._id}>
                     <Link to={`/category/${category.slug}`}>
                       {category.name}
                     </Link>

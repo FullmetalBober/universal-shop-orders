@@ -11,7 +11,7 @@ const responsive = {
   },
 };
 
-const imgHtml = (img: string) => (
+const Image = ({ img }: { img: string }) => (
   <img src={img} className='rounded-lg' alt={img} />
 );
 
@@ -28,10 +28,12 @@ const Gallery = (props: Props) => {
           infinite
           containerClass='rounded-lg'
         >
-          {images.map(img => imgHtml(img))}
+          {images.map((img, index) => (
+            <Image key={index} img={img} />
+          ))}
         </Carousel>
       )}
-      {images.length === 1 && imgHtml(images[0])}
+      {images.length === 1 && <Image img={images[0]} />}
     </section>
   );
 };

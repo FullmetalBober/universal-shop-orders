@@ -39,8 +39,12 @@ const Pagination = (props: Props) => {
   return (
     <aside class='flex justify-center'>
       <nav class='join'>
-        {pages.map(page => (
-          <Link to={`${pageChangeHref}?page=${page}`} class={linkClass(page)}>
+        {pages.map((page, index) => (
+          <Link
+            key={index}
+            to={`${pageChangeHref}?page=${page}`}
+            class={linkClass(page)}
+          >
             {page}
           </Link>
         ))}

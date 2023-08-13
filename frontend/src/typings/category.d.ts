@@ -3,6 +3,7 @@ declare interface Category {
   name: string;
   menuType: string;
   characteristics: {
+    _id: string;
     name: string;
     parameters: string[];
   }[];
