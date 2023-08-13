@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useIsAuthenticated } from 'react-auth-kit';
 import UserMenu from './UserMenu';
 
-const Navbar = () => {
+const Header = () => {
   const isAuthenticated = useIsAuthenticated();
 
   return (
@@ -29,4 +29,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default Header;
