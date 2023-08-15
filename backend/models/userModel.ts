@@ -42,7 +42,7 @@ const userSchema = new mongoose.Schema<IUser>(
     photo: {
       type: String,
       trim: true,
-      default: '/images/userDefault.jpg',
+      // default: '/images/userDefault.jpg',
     },
     role: {
       type: String,
@@ -71,9 +71,15 @@ const userSchema = new mongoose.Schema<IUser>(
       default: false,
     },
     passwordChangedAt: Date,
-    passwordResetToken: String,
+    passwordResetToken: {
+      type: String,
+      select: false,
+    },
     passwordResetExpires: Date,
-    emailActivateToken: String,
+    emailActivateToken: {
+      type: String,
+      select: false,
+    },
   },
   {
     timestamps: true,

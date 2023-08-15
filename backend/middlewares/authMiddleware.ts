@@ -5,14 +5,15 @@ import User from '../models/userModel';
 import AppError from '../utils/appError';
 
 export const protect: RequestHandler = async (req, res, next) => {
+  const cookieName = process.env.JWT_COOKIE_NAME!;
   let token;
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies.jwt) {
-    token = req.cookies.jwt;
+  } else if (req.cookies[cookieName]) {
+    token = req.cookies[cookieName];
   }
 
   if (!token) {
