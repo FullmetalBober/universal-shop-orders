@@ -1,3 +1,4 @@
+// import { lazy, Suspense } from 'preact/compat';
 import { useEffect } from 'preact/hooks';
 import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home/Home';
@@ -6,9 +7,12 @@ import { fetchCategoryData } from './store/category-actions';
 import Category from './components/Category/Category';
 import Product from './components/Product/Product';
 import Login from './components/Authentication/Login';
+import HardLogout from './components/Authentication/HardLogout';
+import Layout from './components/Layout/Layout';
 import 'react-multi-carousel/lib/styles.css';
 import './app.css';
-import Layout from './components/Layout/Layout';
+
+// const HardLogout = lazy(() => import('./components/Authentication/HardLogout'));
 
 export function App() {
   const dispatch = useAppDispatch();
@@ -20,10 +24,11 @@ export function App() {
   return (
     <Layout>
       <Routes>
-        <Route path='/' element={<Home />} />
+        <Route index element={<Home />} />
         <Route path='/category/:categorySlug' element={<Category />} />
         <Route path='/product/:productSlug' element={<Product />} />
         <Route path='/auth/login' element={<Login />} />
+        <Route path='/auth/hard-logout' element={<HardLogout />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Layout>
@@ -31,3 +36,14 @@ export function App() {
 }
 
 const NotFound = () => <div>404</div>;
+
+{
+  /* <Route
+  path='/auth/hard-logout'
+  element={
+    <Suspense fallback={<Loading />}>
+      <HardLogout />
+    </Suspense>
+  }
+/> */
+}
