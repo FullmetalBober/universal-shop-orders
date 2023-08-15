@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler, UseFormProps } from 'react-hook-form';
 import useAxios from 'axios-hooks';
+import { useSignIn } from 'react-auth-kit';
 import * as EmailValidator from 'email-validator';
 import AuthTemplateForm from './AuthTemplateForm';
 
@@ -19,14 +20,16 @@ const useFormParams: UseFormProps<Inputs> = {
 };
 
 const Login = () => {
-  const [{ data: userData, loading, error }, executePost] = useAxios(
+  const signIn = useSignIn();
+  const navigate = useNavigate();
+
+  const [{ loading, error }, executePost] = useAxios(
     {
       url: '/api/v1/users/login',
       method: 'POST',
     },
     { manual: true }
   );
-  console.log(userData, loading, error); //! remove
 
   const {
     register,
@@ -44,8 +47,22 @@ const Login = () => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async data => {
-    await executePost({ data });
-    console.log(userData);
+    const response = await executePost({ data });
+    const { data: responseData } = response;
+    const { user } = responseData.data;
+
+    const expiresThrough =
+      new Date(responseData.expiresIn).getTime() - new Date().getTime();
+    const expiresThroughInMinutes = Math.floor(expiresThrough / 1000 / 60);
+
+    signIn({
+      token: responseData.token,
+      expiresIn: expiresThroughInMinutes,
+      tokenType: responseData.tokenType,
+      authState: user,
+    });
+
+    navigate('/');
   };
 
   return (

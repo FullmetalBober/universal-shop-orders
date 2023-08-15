@@ -7,7 +7,6 @@ import { fetchCategoryData } from './store/category-actions';
 import Category from './components/Category/Category';
 import Product from './components/Product/Product';
 import Login from './components/Authentication/Login';
-import HardLogout from './components/Authentication/HardLogout';
 import Layout from './components/Layout/Layout';
 import 'react-multi-carousel/lib/styles.css';
 import './app.css';
@@ -28,7 +27,6 @@ export function App() {
         <Route path='/category/:categorySlug' element={<Category />} />
         <Route path='/product/:productSlug' element={<Product />} />
         <Route path='/auth/login' element={<Login />} />
-        <Route path='/auth/hard-logout' element={<HardLogout />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Layout>

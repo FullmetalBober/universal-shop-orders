@@ -6,7 +6,7 @@ import bcrypt from 'bcryptjs';
 export interface IUser extends mongoose.Document {
   name: string;
   email: string;
-  photo: string;
+  image: string;
   role: string;
   password: string;
   passwordConfirm?: string;
@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema<IUser>(
       validate: [validator.isEmail, 'Please provide a valid email'],
       required: [true, 'User must have an email'],
     },
-    photo: {
+    image: {
       type: String,
       trim: true,
       // default: '/images/userDefault.jpg',

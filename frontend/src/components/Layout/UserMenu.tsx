@@ -1,14 +1,33 @@
-const image = null;
+import { useAuthUser, useSignOut } from 'react-auth-kit';
+import { Link } from 'react-router-dom';
+import useAxios from 'axios-hooks';
 
 const UserMenu = () => {
-  //TODO: get image from auth kit
+  const auth = useAuthUser();
+  const signOut = useSignOut();
+
+  const [{}, executePost] = useAxios(
+    {
+      url: '/api/v1/users/logout',
+      method: 'POST',
+    },
+    { manual: true }
+  );
+
+  const { image, name } = auth();
+  const nameFirstLetter = name?.charAt(0);
+
+  const logoutHandle = () => {
+    signOut();
+    executePost();
+  };
 
   return (
     <div class='dropdown dropdown-end'>
       <label tabIndex={0} class='avatar placeholder btn btn-circle btn-ghost'>
         <div class='w-10 rounded-full bg-neutral-focus text-neutral-content'>
           {image && <img src={image} />}
-          {!image && <span class='text-3xl'>T</span>}
+          {!image && <span class='text-3xl'>{nameFirstLetter}</span>}
         </div>
       </label>
       <ul
@@ -16,13 +35,15 @@ const UserMenu = () => {
         class='menu dropdown-content rounded-box menu-sm z-[1] mt-3 w-52 bg-base-100 p-2 shadow'
       >
         <li>
-          <a class='justify-between'>Profile</a>
+          <Link to='/profile' class='justify-between'>
+            Profile
+          </Link>
         </li>
         <li>
-          <a>Settings</a>
+          <Link to='/setting'>Settings</Link>
         </li>
         <li>
-          <a>Logout</a>
+          <button onClick={logoutHandle}>Logout</button>
         </li>
       </ul>
     </div>
