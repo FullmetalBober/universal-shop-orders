@@ -1,6 +1,8 @@
-// import { lazy, Suspense } from 'preact/compat';
 import { useEffect } from 'preact/hooks';
 import { Routes, Route } from 'react-router-dom';
+import useAxios from 'axios-hooks';
+import { useIsAuthenticated } from 'react-auth-kit';
+import useAuth from './hooks/use-auth';
 import Home from './components/Home/Home';
 import { useAppDispatch } from './store';
 import { fetchCategoryData } from './store/category-actions';
@@ -11,14 +13,23 @@ import Layout from './components/Layout/Layout';
 import 'react-multi-carousel/lib/styles.css';
 import './app.css';
 
-// const HardLogout = lazy(() => import('./components/Authentication/HardLogout'));
-
 export function App() {
   const dispatch = useAppDispatch();
+  const isAuthenticated = useIsAuthenticated();
+  const setAuth = useAuth();
+  const [{}, getUser] = useAxios('/api/v1/users/me');
 
   useEffect(() => {
+    // get category data
     dispatch(fetchCategoryData());
-  }, [dispatch]);
+    if (!isAuthenticated())
+      // if user is not authenticated then get user data
+      (async () => {
+        const userResponse = await getUser();
+        const { data: user } = userResponse.data.data;
+        setAuth(user);
+      })();
+  }, []);
 
   return (
     <Layout>
@@ -34,14 +45,3 @@ export function App() {
 }
 
 const NotFound = () => <div>404</div>;
-
-{
-  /* <Route
-  path='/auth/hard-logout'
-  element={
-    <Suspense fallback={<Loading />}>
-      <HardLogout />
-    </Suspense>
-  }
-/> */
-}

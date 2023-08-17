@@ -6,12 +6,11 @@ import User from '../models/userModel';
 import AppError from '../utils/appError';
 import Email from '../utils/email';
 import { IUser } from '../models/userModel';
-
-const tokenType = 'Bearer';
+import env from '../env';
 
 const signToken = (id: string) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET!, {
-    expiresIn: process.env.JWT_EXPIRES_IN,
+  return jwt.sign({ id }, env.JWT_SECRET, {
+    expiresIn: env.JWT_EXPIRES_IN,
   });
 };
 
@@ -22,8 +21,8 @@ const createSendToken = (
   res: Response
 ) => {
   const token = signToken(user._id);
-  const cookieName = process.env.JWT_COOKIE_NAME!;
-  const jwtExpires = process.env.JWT_EXPIRES_IN!;
+  const cookieName = env.JWT_COOKIE_NAME;
+  const jwtExpires = env.JWT_EXPIRES_IN;
   const expiresIn = new Date(Date.now() + ms(jwtExpires));
 
   res.cookie(cookieName, token, {
@@ -38,7 +37,6 @@ const createSendToken = (
     status: 'success',
     token,
     expiresIn,
-    tokenType,
     data: {
       user,
     },
@@ -105,7 +103,7 @@ export const login: RequestHandler = async (req, res, next) => {
 };
 
 export const logout: RequestHandler = (req, res) => {
-  const cookieName = process.env.JWT_COOKIE_NAME!;
+  const cookieName = env.JWT_COOKIE_NAME;
 
   res.cookie(cookieName, 'loggedOut', {
     expires: new Date(Date.now() + 10 * 1000),

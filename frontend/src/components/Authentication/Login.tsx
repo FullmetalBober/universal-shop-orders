@@ -1,9 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler, UseFormProps } from 'react-hook-form';
 import useAxios from 'axios-hooks';
-import { useSignIn } from 'react-auth-kit';
+import useAuth from '../../hooks/use-auth';
 import * as EmailValidator from 'email-validator';
 import AuthTemplateForm from './AuthTemplateForm';
+import Button from '../UI/Button';
 
 type Inputs = {
   email: string;
@@ -20,10 +21,10 @@ const useFormParams: UseFormProps<Inputs> = {
 };
 
 const Login = () => {
-  const signIn = useSignIn();
+  const setAuth = useAuth();
   const navigate = useNavigate();
 
-  const [{ loading, error }, executePost] = useAxios(
+  const [{ loading }, executePost] = useAxios(
     {
       url: '/api/v1/users/login',
       method: 'POST',
@@ -51,20 +52,12 @@ const Login = () => {
     const { data: responseData } = response;
     const { user } = responseData.data;
 
-    const expiresThrough =
-      new Date(responseData.expiresIn).getTime() - new Date().getTime();
-    const expiresThroughInMinutes = Math.floor(expiresThrough / 1000 / 60);
-
-    signIn({
-      token: responseData.token,
-      expiresIn: expiresThroughInMinutes,
-      tokenType: responseData.tokenType,
-      authState: user,
-    });
+    setAuth(user);
 
     navigate('/');
   };
 
+  const buttonDisabled = !isValid || loading;
   return (
     <main>
       <AuthTemplateForm
@@ -110,9 +103,13 @@ const Login = () => {
           </label>
         </div>
         <div class='form-control mt-6'>
-          <button disabled={!isValid} class='btn btn-primary'>
+          <Button
+            loadingMode={loading}
+            disabled={buttonDisabled}
+            class='btn btn-primary'
+          >
             Увійти
-          </button>
+          </Button>
         </div>
       </AuthTemplateForm>
     </main>

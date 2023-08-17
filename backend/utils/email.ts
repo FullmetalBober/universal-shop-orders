@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import pug from 'pug';
 import { IUser } from '../models/userModel';
+import env from '../env';
 const { htmlToText } = require('html-to-text');
 
 class Email {
@@ -13,24 +14,24 @@ class Email {
     this.to = user.email;
     this.firstName = user.name.split(' ')[0];
     this.url = url;
-    this.from = `${process.env.EMAIL_FROM_NAME} <${process.env.EMAIL_FROM_ADDRESS}>`;
+    this.from = `${env.EMAIL_FROM_NAME} <${env.EMAIL_FROM_ADDRESS}>`;
   }
 
   newTransport() {
-    if (process.env.NODE_ENV === 'production')
+    if (env.NODE_ENV === 'production')
       return nodemailer.createTransport({
         service: 'SendGrid',
         auth: {
-          user: process.env.SENDGRID_USERNAME,
-          pass: process.env.SENDGRID_PASSWORD,
+          user: env.SENDGRID_USERNAME,
+          pass: env.SENDGRID_PASSWORD,
         },
       });
 
     return nodemailer.createTransport({
       service: 'Mailtrap',
       auth: {
-        user: process.env.MAILTRAP_USERNAME,
-        pass: process.env.MAILTRAP_PASSWORD,
+        user: env.MAILTRAP_USERNAME,
+        pass: env.MAILTRAP_PASSWORD,
       },
     });
   }
@@ -39,8 +40,8 @@ class Email {
     return nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user: process.env.GMAIL_USERNAME,
-        pass: process.env.GMAIL_PASSWORD,
+        user: env.GMAIL_USERNAME,
+        pass: env.GMAIL_PASSWORD,
       },
     });
   }

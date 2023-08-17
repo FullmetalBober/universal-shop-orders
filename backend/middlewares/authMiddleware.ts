@@ -3,9 +3,10 @@ import jwt from 'jsonwebtoken';
 import { promisify } from 'util';
 import User from '../models/userModel';
 import AppError from '../utils/appError';
+import env from '../env';
 
 export const protect: RequestHandler = async (req, res, next) => {
-  const cookieName = process.env.JWT_COOKIE_NAME!;
+  const cookieName = env.JWT_COOKIE_NAME;
   let token;
   if (
     req.headers.authorization &&
@@ -18,20 +19,20 @@ export const protect: RequestHandler = async (req, res, next) => {
 
   if (!token) {
     return next(
-      new AppError('You are not logged in! Please log in to get access.', 401)
+      new AppError(
+        'Ви не авторизовані! Будь ласка, увійдіть, щоб отримати доступ.',
+        401
+      )
     );
   }
 
-  const decoded = await (promisify as any)(jwt.verify)(
-    token,
-    process.env.JWT_SECRET
-  );
+  const decoded = await (promisify as any)(jwt.verify)(token, env.JWT_SECRET);
 
   const currentUser = await User.findById(decoded.id);
   if (!currentUser) {
     return next(
       new AppError(
-        'The user belonging to this token does no longer exist.',
+        'Користувач, якому належить цей токен, більше не існує.',
         401
       )
     );
@@ -39,7 +40,10 @@ export const protect: RequestHandler = async (req, res, next) => {
 
   if (currentUser.changedPasswordAfter(decoded.iat!)) {
     return next(
-      new AppError('User recently changed password! Please log in again.', 401)
+      new AppError(
+        'Користувач нещодавно змінив пароль! Будь ласка, увійдіть знову.',
+        401
+      )
     );
   }
 

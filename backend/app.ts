@@ -12,6 +12,7 @@ import compression from 'compression';
 import path from 'path';
 import globalErrorHandler from './middlewares/errorMiddleware';
 import AppError from './utils/appError';
+import env from './env';
 
 import userRouter from './routes/userRoutes';
 import categoryRouter from './routes/categoryRoutes';
@@ -26,7 +27,7 @@ app.enable('trust proxy');
 app.use(cors());
 app.use(helmet());
 
-if (process.env.NODE_ENV === 'development') {
+if (env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 

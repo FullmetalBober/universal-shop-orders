@@ -1,7 +1,9 @@
-import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+dotenv.config();
+import mongoose from 'mongoose';
 import { Server } from 'http';
 import app from './app';
+import env from './env';
 
 process.on('uncaughtException', err => {
   console.error(
@@ -12,12 +14,7 @@ process.on('uncaughtException', err => {
   process.exit(1);
 });
 
-dotenv.config();
-
-const DB: string = process.env.DATABASE!.replace(
-  '<PASSWORD>',
-  process.env.DATABASE_PASSWORD!
-);
+const DB: string = env.DATABASE.replace('<PASSWORD>', env.DATABASE_PASSWORD);
 
 mongoose
   .connect(DB, {
@@ -25,7 +22,7 @@ mongoose
   })
   .then(() => console.log('DB connection successful!'));
 
-const port = process.env.PORT || 8000;
+const port = env.PORT;
 const server: Server = app.listen(port, () => {
   console.log(`App running on port ${port}...`);
 });

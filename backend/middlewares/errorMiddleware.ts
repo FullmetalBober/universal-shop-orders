@@ -2,6 +2,7 @@ import AppError from '../utils/appError';
 import { Request, Response, NextFunction } from 'express';
 import { Error as MongooseError, CastError } from 'mongoose';
 import { MongoServerError } from 'mongodb';
+import env from '../env';
 
 type ValidationError = MongooseError.ValidationError;
 
@@ -62,9 +63,9 @@ const errorMiddleware = (
   err.statusCode = err.statusCode || 500;
   err.status = err.status || 'error';
 
-  if (process.env.NODE_ENV === 'development') {
+  if (env.NODE_ENV === 'development') {
     sendErrorDev(err, req, res);
-  } else if (process.env.NODE_ENV === 'production') {
+  } else if (env.NODE_ENV === 'production') {
     let error:
       | AppError
       | CastError

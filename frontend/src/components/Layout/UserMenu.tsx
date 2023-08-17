@@ -14,16 +14,20 @@ const UserMenu = () => {
     { manual: true }
   );
 
-  const { image, name } = auth();
-  const nameFirstLetter = name?.charAt(0);
+  const user = auth();
+
+  if (!user) return null;
+  const { name, image } = user;
+
+  const nameFirstLetter = name.charAt(0);
 
   const logoutHandle = () => {
-    signOut();
     executePost();
+    signOut();
   };
 
   return (
-    <div class='dropdown dropdown-end'>
+    <div class='dropdown-end dropdown'>
       <label tabIndex={0} class='avatar placeholder btn btn-circle btn-ghost'>
         <div class='w-10 rounded-full bg-neutral-focus text-neutral-content'>
           {image && <img src={image} />}
