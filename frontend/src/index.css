@@ -16,7 +16,7 @@
   }
 
   main,
-  header {
+  header > nav {
     @apply mx-auto md:max-w-[1500px];
   }
 }
