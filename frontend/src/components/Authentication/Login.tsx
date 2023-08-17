@@ -1,10 +1,12 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler, UseFormProps } from 'react-hook-form';
 import useAxios from 'axios-hooks';
+import { toast } from 'react-toastify';
 import useAuth from '../../hooks/use-auth';
 import * as EmailValidator from 'email-validator';
 import AuthTemplateForm from './AuthTemplateForm';
 import Button from '../UI/Button';
+import { AxiosError } from 'axios';
 
 type Inputs = {
   email: string;
@@ -48,13 +50,19 @@ const Login = () => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async data => {
-    const response = await executePost({ data });
-    const { data: responseData } = response;
-    const { user } = responseData.data;
+    try {
+      const response = await executePost({ data });
+      const { data: responseData } = response;
+      const { user } = responseData.data;
 
-    setAuth(user);
-
-    navigate('/');
+      setAuth(user);
+      toast.success('Ви успішно увійшли!');
+      navigate('/');
+    } catch (error) {
+      if (!(error instanceof AxiosError)) return;
+      const errorMessages = error.response?.data.message;
+      toast.error(errorMessages);
+    }
   };
 
   const buttonDisabled = !isValid || loading;

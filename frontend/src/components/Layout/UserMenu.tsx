@@ -21,13 +21,13 @@ const UserMenu = () => {
 
   const nameFirstLetter = name.charAt(0);
 
-  const logoutHandle = () => {
-    executePost();
+  const logoutHandle = async () => {
+    await executePost();
     signOut();
   };
 
   return (
-    <div class='dropdown-end dropdown'>
+    <div class='dropdown dropdown-end'>
       <label tabIndex={0} class='avatar placeholder btn btn-circle btn-ghost'>
         <div class='w-10 rounded-full bg-neutral-focus text-neutral-content'>
           {image && <img src={image} />}

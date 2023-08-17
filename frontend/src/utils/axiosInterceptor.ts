@@ -1,18 +1,16 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
-const cookieName = '_auth';
+const cookieName = import.meta.env.VITE_AUTH_NAME;
 const userNoExist = 'Користувач, якому належить цей токен, більше не існує.';
 const userRecentlyChangedPassword =
   'Користувач нещодавно змінив пароль! Будь ласка, увійдіть знову.';
-const userNotLoggedIn = 'Ви не авторизовані! Будь ласка, увійдіть, щоб отримати доступ.';
-
-const removeCookie = () => {
-  document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-};
+const userNotLoggedIn =
+  'Ви не авторизовані! Будь ласка, увійдіть, щоб отримати доступ.';
 
 const logout = () => {
   axios.post('/api/v1/users/logout');
-  removeCookie();
+  Cookies.remove(cookieName);
   window.location.href = '/';
 };
 
@@ -23,16 +21,17 @@ export const setupAxiosInterceptors = () => {
       return response;
     },
     function (error) {
-      const message = error.response.data.message;
+      const message = error.response?.data?.message;
+      const status = error.response?.status;
 
-      if (error.response.status === 401) {
+      if (status === 401) {
         if (message === userNoExist || message === userRecentlyChangedPassword)
           // Logout if user does not exist or recently changed password
           logout();
 
         if (message === userNotLoggedIn)
           // Logout if token is expired
-          removeCookie();
+          Cookies.remove(cookieName);
       }
       return Promise.reject(error);
     }

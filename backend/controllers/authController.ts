@@ -8,6 +8,12 @@ import Email from '../utils/email';
 import { IUser } from '../models/userModel';
 import env from '../env';
 
+const tokenChecker = (tokenName: string) => `${tokenName}-checker`;
+const tokenCheck = {
+  set: '≽^•⩊•^≼',
+  unset: 'ᓚᘏᗢ',
+};
+
 const signToken = (id: string) => {
   return jwt.sign({ id }, env.JWT_SECRET, {
     expiresIn: env.JWT_EXPIRES_IN,
@@ -29,6 +35,10 @@ const createSendToken = (
     expires: expiresIn,
     httpOnly: true,
     secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
+  });
+
+  res.cookie(tokenChecker(cookieName), tokenCheck.set, {
+    expires: expiresIn,
   });
 
   (user as any).password = undefined;
@@ -90,13 +100,18 @@ export const login: RequestHandler = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(new AppError('Please provide email and password!', 400));
+    return next(
+      new AppError(
+        'Будь ласка, вкажіть адресу електронної пошти та пароль!',
+        400
+      )
+    );
   }
 
   const user = await User.findOne({ email }).select('+password');
 
   if (!user || !(await user.correctPassword(password, user.password!))) {
-    return next(new AppError('Incorrect email or password', 401));
+    return next(new AppError('Неправильна електрона пошта або пароль', 401));
   }
 
   createSendToken(user, 200, req, res);
@@ -104,10 +119,14 @@ export const login: RequestHandler = async (req, res, next) => {
 
 export const logout: RequestHandler = (req, res) => {
   const cookieName = env.JWT_COOKIE_NAME;
+  const expires = new Date(-1);
 
   res.cookie(cookieName, 'loggedOut', {
-    expires: new Date(Date.now() + 10 * 1000),
+    expires,
     httpOnly: true,
+  });
+  res.cookie(tokenChecker(cookieName), tokenCheck.unset, {
+    expires,
   });
   res.status(200).json({ status: 'success' });
 };
@@ -115,7 +134,7 @@ export const logout: RequestHandler = (req, res) => {
 export const forgotPassword: RequestHandler = async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
   if (!user) {
-    return next(new AppError('There is no user with email address.', 404));
+    return next(new AppError('Немає користувача з електронною адресою.', 404));
   }
 
   const resetToken = user.createResetToken('passwordReset');

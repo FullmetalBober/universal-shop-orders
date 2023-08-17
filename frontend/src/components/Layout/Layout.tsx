@@ -1,3 +1,4 @@
+import { ToastContainer } from 'react-toastify';
 import Footer from './Footer';
 import Header from './Header';
 
@@ -10,6 +11,18 @@ const Layout = (props: Props) => {
 
   return (
     <>
+      <ToastContainer
+        position='top-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='colored'
+      />
       <Header />
       {children}
       <Footer />

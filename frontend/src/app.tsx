@@ -2,6 +2,7 @@ import { useEffect } from 'preact/hooks';
 import { Routes, Route } from 'react-router-dom';
 import useAxios from 'axios-hooks';
 import { useIsAuthenticated } from 'react-auth-kit';
+import Cookies from 'js-cookie';
 import useAuth from './hooks/use-auth';
 import Home from './components/Home/Home';
 import { useAppDispatch } from './store';
@@ -11,18 +12,23 @@ import Product from './components/Product/Product';
 import Login from './components/Authentication/Login';
 import Layout from './components/Layout/Layout';
 import 'react-multi-carousel/lib/styles.css';
+import 'react-toastify/dist/ReactToastify.css';
 import './app.css';
+
+const tokenCheckName = import.meta.env.VITE_AUTH_CHECKER;
 
 export function App() {
   const dispatch = useAppDispatch();
   const isAuthenticated = useIsAuthenticated();
   const setAuth = useAuth();
-  const [{}, getUser] = useAxios('/api/v1/users/me');
+  const [{}, getUser] = useAxios('/api/v1/users/me', { manual: true });
 
   useEffect(() => {
     // get category data
     dispatch(fetchCategoryData());
-    if (!isAuthenticated())
+    const token = Cookies.get(tokenCheckName);
+
+    if (!isAuthenticated() && token)
       // if user is not authenticated then get user data
       (async () => {
         const userResponse = await getUser();

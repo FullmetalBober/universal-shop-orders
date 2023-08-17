@@ -1,6 +1,6 @@
 import { useSignIn } from 'react-auth-kit';
 
-const userExpiresIn = 60 * 60 * 24 * 15; // 15 days
+const userExpiresIn = 60 * 24 * 15; // 15 days
 const tokenType = 'Bearer';
 
 const useAuth = () => {
