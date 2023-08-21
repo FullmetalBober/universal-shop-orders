@@ -8,9 +8,6 @@ import { IUser } from '../models/userModel';
 import env from '../env';
 import { createCookie, removeCookie } from '../utils/cookie';
 
-const tokenChecker = (tokenName: string) => `${tokenName}-checker`;
-const tokenCheck = '≽^•⩊•^≼';
-
 const signToken = (id: string) => {
   return jwt.sign({ id }, env.JWT_SECRET, {
     expiresIn: env.JWT_EXPIRES_IN,
@@ -25,7 +22,7 @@ const createSendToken = (
 ) => {
   const token = signToken(user._id);
 
-  createCookie(res, token);
+  res = createCookie(res, token);
 
   user.password = undefined!;
 
@@ -49,9 +46,9 @@ export const signup: RequestHandler = async (req, res, next) => {
   const activateToken = newUser.createResetToken('emailActivate');
   await newUser.save({ validateBeforeSave: false });
 
-  const url = `${req.protocol}://${req.get(
-    'host'
-  )}/api/v1/users/activate/${activateToken}`;
+  let url = `${req.protocol}://${req.headers.host}/api/v1/users/activate/${activateToken}`;
+  if (req.headers.origin)
+    url = `${req.headers.origin}/auth/verify/${activateToken}`;
 
   await new Email(newUser, url).sendWelcome();
 
@@ -103,7 +100,7 @@ export const login: RequestHandler = async (req, res, next) => {
 };
 
 export const logout: RequestHandler = (req, res) => {
-  removeCookie(res);
+  res = removeCookie(res);
 
   res.status(200).json({ status: 'success' });
 };

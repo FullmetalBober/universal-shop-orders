@@ -51,7 +51,7 @@ export const updateMe: RequestHandler = async (req, res, next) => {
 export const deleteMe: RequestHandler = async (req, res, next) => {
   await User.findByIdAndDelete(req.user?.id);
 
-  removeCookie(res);
+  res = removeCookie(res);
 
   res.status(204).json({
     status: 'success',

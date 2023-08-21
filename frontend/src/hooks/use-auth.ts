@@ -13,14 +13,13 @@ const useAuth = () => {
     const expiresInCookie = Cookies.get(tokenCheckName);
 
     let expiresIn = expiresInDefault;
-    if (expiresInCookie) {
+    if (expiresInCookie && parseInt(expiresInCookie)) {
       const expiresThrough =
-        new Date(expiresInCookie).getTime() - new Date().getTime();
+        new Date(+expiresInCookie).getTime() - new Date().getTime();
       expiresIn = Math.floor(expiresThrough / 1000 / 60);
     }
 
     if (expiresIn >= expiresInDefault) expiresIn = expiresInDefault;
-
     signIn({
       token: 'Hi there!',
       expiresIn: expiresIn,

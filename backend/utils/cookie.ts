@@ -6,35 +6,35 @@ const tokenChecker = (tokenName: string) => `${tokenName}-checker`;
 const tokenCheck = '≽^•⩊•^≼';
 
 export const createCookie = (res: Response, token: string) => {
-  return () => {
-    const cookieName = env.JWT_COOKIE_NAME;
-    const jwtExpires = env.JWT_EXPIRES_IN;
-    const expiresIn = new Date(Date.now() + ms(jwtExpires));
+  const cookieName = env.JWT_COOKIE_NAME;
+  const jwtExpires = env.JWT_EXPIRES_IN;
+  const expiresIn = new Date(Date.now() + ms(jwtExpires));
 
-    res.cookie(cookieName, token, {
-      expires: expiresIn,
-      httpOnly: true,
-      secure: true,
-      // secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
-    });
+  res.cookie(cookieName, token, {
+    expires: expiresIn,
+    httpOnly: true,
+    secure: true,
+    // secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
+  });
 
-    res.cookie(tokenChecker(cookieName), expiresIn, {
-      expires: expiresIn,
-    });
-  };
+  res.cookie(tokenChecker(cookieName), expiresIn.getTime(), {
+    expires: expiresIn,
+  });
+
+  return res;
 };
 
 export const removeCookie = (res: Response) => {
-  return () => {
-    const cookieName = env.JWT_COOKIE_NAME;
-    const expires = new Date(-1);
+  const cookieName = env.JWT_COOKIE_NAME;
+  const expires = new Date(-1);
 
-    res.cookie(cookieName, 'loggedOut', {
-      expires,
-      httpOnly: true,
-    });
-    res.cookie(tokenChecker(cookieName), tokenCheck, {
-      expires,
-    });
-  };
+  res.cookie(cookieName, 'loggedOut', {
+    expires,
+    httpOnly: true,
+  });
+  res.cookie(tokenChecker(cookieName), tokenCheck, {
+    expires,
+  });
+
+  return res;
 };

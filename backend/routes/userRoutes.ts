@@ -29,6 +29,12 @@ router.delete(
   // userController.deleteMyPhoto,
   userController.deleteMe
 );
+router.delete(
+  '/nonVerified/deleteMe',
+  authMiddleware.restrictTo('user'),
+  // userController.deleteMyPhoto,
+  userController.deleteMe
+);
 
 router.use(authMiddleware.restrictTo('admin'));
 router.route('/').get(userController.getAllUsers);

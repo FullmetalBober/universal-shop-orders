@@ -12,10 +12,10 @@ const emailVerification =
 const cookieName = import.meta.env.VITE_AUTH_NAME;
 const verificationPage = '/auth/verify';
 
-const logout = () => {
-  axios.post('/api/v1/users/logout');
+const logout = async () => {
+  await axios.post('/api/v1/users/logout');
   Cookies.remove(cookieName);
-  window.location.href = '/';
+  // window.location.href = '/';
 };
 
 export const setupAxiosInterceptors = () => {

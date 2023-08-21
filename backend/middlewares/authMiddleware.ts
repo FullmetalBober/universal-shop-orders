@@ -5,7 +5,7 @@ import User from '../models/userModel';
 import AppError from '../utils/appError';
 import env from '../env';
 
-const excludeVerifyRoutes = ['/api/v1/users/deleteMe'];
+const excludeVerifyRoute = 'nonVerified';
 
 export const protect: RequestHandler = async (req, res, next) => {
   const cookieName = env.JWT_COOKIE_NAME;
@@ -47,7 +47,7 @@ export const protect: RequestHandler = async (req, res, next) => {
       )
     );
 
-  if (!currentUser.verified && !excludeVerifyRoutes.includes(req.originalUrl))
+  if (!currentUser.verified && !req.originalUrl.includes(excludeVerifyRoute))
     return next(
       new AppError(
         'Користувач не підтвердив свою електронну пошту! Будь ласка, підтвердьте свою електронну пошту.',
