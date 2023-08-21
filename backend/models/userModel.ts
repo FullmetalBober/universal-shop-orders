@@ -89,7 +89,7 @@ const userSchema = new mongoose.Schema<IUser>(
 userSchema.index(
   { createdAt: 1 },
   {
-    expireAfterSeconds: 24 * 60 * 60,
+    expireAfterSeconds: 1 * 60 * 60, // 1 hour
     partialFilterExpression: { verified: false },
   }
 );
@@ -98,17 +98,6 @@ userSchema.index(
   { role: 1 },
   { unique: true, partialFilterExpression: { role: 'admin' } }
 );
-
-userSchema.pre(/^find/, function (next) {
-  const query = this as any;
-  const conditions = query._conditions;
-
-  if (conditions.emailActivateToken && Object.keys(conditions).length === 1)
-    return next();
-
-  query.find({ verified: { $ne: false } });
-  next();
-});
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();

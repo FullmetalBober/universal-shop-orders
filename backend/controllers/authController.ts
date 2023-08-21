@@ -9,10 +9,7 @@ import { IUser } from '../models/userModel';
 import env from '../env';
 
 const tokenChecker = (tokenName: string) => `${tokenName}-checker`;
-const tokenCheck = {
-  set: '≽^•⩊•^≼',
-  unset: 'ᓚᘏᗢ',
-};
+const tokenCheck = '≽^•⩊•^≼';
 
 const signToken = (id: string) => {
   return jwt.sign({ id }, env.JWT_SECRET, {
@@ -37,7 +34,7 @@ const createSendToken = (
     secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
   });
 
-  res.cookie(tokenChecker(cookieName), tokenCheck.set, {
+  res.cookie(tokenChecker(cookieName), expiresIn, {
     expires: expiresIn,
   });
 
@@ -125,7 +122,7 @@ export const logout: RequestHandler = (req, res) => {
     expires,
     httpOnly: true,
   });
-  res.cookie(tokenChecker(cookieName), tokenCheck.unset, {
+  res.cookie(tokenChecker(cookieName), tokenCheck, {
     expires,
   });
   res.status(200).json({ status: 'success' });

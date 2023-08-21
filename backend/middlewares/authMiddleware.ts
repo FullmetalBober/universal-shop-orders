@@ -5,6 +5,8 @@ import User from '../models/userModel';
 import AppError from '../utils/appError';
 import env from '../env';
 
+const excludeVerifyRoutes = ['/api/v1/users/deleteMe'];
+
 export const protect: RequestHandler = async (req, res, next) => {
   const cookieName = env.JWT_COOKIE_NAME;
   let token;
@@ -29,23 +31,29 @@ export const protect: RequestHandler = async (req, res, next) => {
   const decoded = await (promisify as any)(jwt.verify)(token, env.JWT_SECRET);
 
   const currentUser = await User.findById(decoded.id);
-  if (!currentUser) {
+  if (!currentUser)
     return next(
       new AppError(
         'Користувач, якому належить цей токен, більше не існує.',
         401
       )
     );
-  }
 
-  if (currentUser.changedPasswordAfter(decoded.iat!)) {
+  if (currentUser.changedPasswordAfter(decoded.iat!))
     return next(
       new AppError(
         'Користувач нещодавно змінив пароль! Будь ласка, увійдіть знову.',
         401
       )
     );
-  }
+
+  if (!currentUser.verified && !excludeVerifyRoutes.includes(req.originalUrl))
+    return next(
+      new AppError(
+        'Користувач не підтвердив свою електронну пошту! Будь ласка, підтвердьте свою електронну пошту.',
+        401
+      )
+    );
 
   req.user = currentUser;
   res.locals.user = currentUser;

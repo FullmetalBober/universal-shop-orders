@@ -2,15 +2,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler, UseFormProps } from 'react-hook-form';
 import useAxios from 'axios-hooks';
 import { toast } from 'react-toastify';
-import { AxiosError } from 'axios';
-import useAuth from '../../hooks/use-auth';
 import * as EmailValidator from 'email-validator';
 import AuthTemplateForm from './AuthTemplateForm';
 import Button from '../UI/Button';
+import { AxiosError } from 'axios';
 
 type Inputs = {
   email: string;
+  name: string;
   password: string;
+  passwordConfirm: string;
 };
 
 const emailValidationHandle = (value: string) => EmailValidator.validate(value);
@@ -22,13 +23,12 @@ const useFormParams: UseFormProps<Inputs> = {
   mode: 'onTouched',
 };
 
-const Login = () => {
-  const setAuth = useAuth();
+const Register = () => {
   const navigate = useNavigate();
 
   const [{ loading }, executePost] = useAxios(
     {
-      url: '/api/v1/users/login',
+      url: '/api/v1/users/signup',
       method: 'POST',
     },
     { manual: true }
@@ -36,27 +36,34 @@ const Login = () => {
 
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<Inputs>(useFormParams);
+
+  const passwordConfirmValidationHandle = (value: string) =>
+    value === watch('password');
 
   const registers = {
     email: register('email', {
       required: true,
       validate: emailValidationHandle,
     }),
+    name: register('name', { required: true }),
     password: register('password', { required: true, minLength: 8 }),
+    passwordConfirm: register('passwordConfirm', {
+      required: true,
+      minLength: 8,
+      validate: passwordConfirmValidationHandle,
+    }),
   };
 
   const onSubmit: SubmitHandler<Inputs> = async data => {
     try {
-      const response = await executePost({ data });
-      const { data: responseData } = response;
-      const { user } = responseData.data;
+      await executePost({ data });
 
-      setAuth(user);
-      toast.success('Ви успішно увійшли!');
-      navigate('/');
+      toast.success('Ви успішно зареєструвались!');
+      navigate('/auth/confirm');
     } catch (error) {
       if (!(error instanceof AxiosError)) return;
       const errorMessages = error.response?.data.message;
@@ -69,12 +76,12 @@ const Login = () => {
     <main>
       <AuthTemplateForm
         onSubmit={handleSubmit(onSubmit)}
-        heading='Увійдіть зараз!'
+        heading='Зареєструйтесь зараз!'
         description={
           <>
-            Якщо у вас ще немає облікового запису, ви можете{' '}
-            <Link to='/auth/register' class='link-primary link font-bold'>
-              зареєструватися
+            Якщо ви вже маєте обліковий запис, ви можете{' '}
+            <Link to='/auth/login' class='link-primary link font-bold'>
+              авторизуватися
             </Link>
             .
           </>
@@ -93,6 +100,18 @@ const Login = () => {
           />
         </div>
         <div class='form-control'>
+          <label for='name' class='label'>
+            <span class='label-text'>Ім'я</span>
+          </label>
+          <input
+            type='name'
+            id='name'
+            placeholder="ім'я"
+            class={inputClass(!!errors.name)}
+            {...registers.name}
+          />
+        </div>
+        <div class='form-control'>
           <label for='password' class='label'>
             <span class='label-text'>Пароль</span>
           </label>
@@ -103,11 +122,18 @@ const Login = () => {
             class={inputClass(!!errors.password)}
             {...registers.password}
           />
-          <label class='label'>
-            <Link to='/auth/reset' class='link-hover link label-text-alt'>
-              Забули пароль?
-            </Link>
+        </div>
+        <div class='form-control'>
+          <label for='passwordConfirm' class='label'>
+            <span class='label-text'>Підтвердження паролю</span>
           </label>
+          <input
+            type='password'
+            id='passwordConfirm'
+            placeholder='підтвердження паролю'
+            class={inputClass(!!errors.passwordConfirm)}
+            {...registers.passwordConfirm}
+          />
         </div>
         <div class='form-control mt-6'>
           <Button
@@ -115,7 +141,7 @@ const Login = () => {
             disabled={buttonDisabled}
             class='btn btn-primary'
           >
-            Увійти
+            Зареєструватися
           </Button>
         </div>
       </AuthTemplateForm>
@@ -123,4 +149,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
