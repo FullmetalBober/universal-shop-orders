@@ -2,6 +2,7 @@ import { RequestHandler } from 'express';
 import User from '../models/userModel';
 import AppError from '../utils/appError';
 import * as factory from './handlerFactory';
+import { removeCookie } from '../utils/cookie';
 // const CloudinaryStorage = require('../utils/cloudinary');
 
 export const getUser = factory.getOne(User);
@@ -49,6 +50,8 @@ export const updateMe: RequestHandler = async (req, res, next) => {
 
 export const deleteMe: RequestHandler = async (req, res, next) => {
   await User.findByIdAndDelete(req.user?.id);
+
+  removeCookie(res);
 
   res.status(204).json({
     status: 'success',

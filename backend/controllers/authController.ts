@@ -1,12 +1,12 @@
 import { RequestHandler, Request, Response } from 'express';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import ms from 'ms';
 import User from '../models/userModel';
 import AppError from '../utils/appError';
 import Email from '../utils/email';
 import { IUser } from '../models/userModel';
 import env from '../env';
+import { createCookie, removeCookie } from '../utils/cookie';
 
 const tokenChecker = (tokenName: string) => `${tokenName}-checker`;
 const tokenCheck = '≽^•⩊•^≼';
@@ -24,26 +24,14 @@ const createSendToken = (
   res: Response
 ) => {
   const token = signToken(user._id);
-  const cookieName = env.JWT_COOKIE_NAME;
-  const jwtExpires = env.JWT_EXPIRES_IN;
-  const expiresIn = new Date(Date.now() + ms(jwtExpires));
 
-  res.cookie(cookieName, token, {
-    expires: expiresIn,
-    httpOnly: true,
-    secure: req.secure || req.headers['x-forwarded-proto'] === 'https',
-  });
+  createCookie(res, token);
 
-  res.cookie(tokenChecker(cookieName), expiresIn, {
-    expires: expiresIn,
-  });
-
-  (user as any).password = undefined;
+  user.password = undefined!;
 
   res.status(statusCode).json({
     status: 'success',
     token,
-    expiresIn,
     data: {
       user,
     },
@@ -115,16 +103,8 @@ export const login: RequestHandler = async (req, res, next) => {
 };
 
 export const logout: RequestHandler = (req, res) => {
-  const cookieName = env.JWT_COOKIE_NAME;
-  const expires = new Date(-1);
+  removeCookie(res);
 
-  res.cookie(cookieName, 'loggedOut', {
-    expires,
-    httpOnly: true,
-  });
-  res.cookie(tokenChecker(cookieName), tokenCheck, {
-    expires,
-  });
   res.status(200).json({ status: 'success' });
 };
 

@@ -10,7 +10,7 @@ const emailVerification =
   'Користувач не підтвердив свою електронну пошту! Будь ласка, підтвердьте свою електронну пошту.';
 
 const cookieName = import.meta.env.VITE_AUTH_NAME;
-const verificationPage = '/auth/confirm';
+const verificationPage = '/auth/verify';
 
 const logout = () => {
   axios.post('/api/v1/users/logout');
