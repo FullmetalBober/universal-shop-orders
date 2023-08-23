@@ -8,7 +8,7 @@ export const fetchCategoryData = createAsyncThunk(
       const data = await axios.get('/api/v1/categories?sort=menuType,name');
       return data.data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 );

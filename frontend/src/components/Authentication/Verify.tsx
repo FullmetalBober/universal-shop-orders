@@ -1,11 +1,11 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import useAxios from 'axios-hooks';
 import Button from '../UI/Button';
-import getMe from '../../utils/getMe';
-import useAuth from '../../hooks/use-auth';
+import { useAppDispatch } from '../../store';
+import { fetchUserData } from '../../store/user-actions';
 
 const Verify = () => {
-  const setAuth = useAuth();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { emailToken } = useParams();
   const [
@@ -25,13 +25,8 @@ const Verify = () => {
     { manual: true }
   );
 
-  const setUser = async () => {
-    const user = await getMe();
-    setAuth(user);
-  };
-
   if (activateData) {
-    setUser();
+    dispatch(fetchUserData());
     navigate('/');
   }
 

@@ -63,6 +63,7 @@ const Register = () => {
       await executePost({ data });
 
       toast.success('Ви успішно зареєструвались!');
+      toast.warning('Будь ласка, підтвердьте ваш email!');
       navigate('/auth/verify');
     } catch (error) {
       if (!(error instanceof AxiosError)) return;

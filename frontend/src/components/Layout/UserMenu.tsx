@@ -1,10 +1,11 @@
-import { useAuthUser, useSignOut } from 'react-auth-kit';
 import { Link } from 'react-router-dom';
 import useAxios from 'axios-hooks';
+import { useAppDispatch, useAppSelector } from '../../store';
+import { userActions } from '../../store/user-slice';
 
 const UserMenu = () => {
-  const auth = useAuthUser();
-  const signOut = useSignOut();
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector(state => state.user);
 
   const [{}, executePost] = useAxios(
     {
@@ -14,16 +15,13 @@ const UserMenu = () => {
     { manual: true }
   );
 
-  const user = auth();
-
-  if (!user) return null;
   const { name, image } = user;
 
   const nameFirstLetter = name.charAt(0);
 
   const logoutHandle = async () => {
     await executePost();
-    signOut();
+    dispatch(userActions.signOut());
   };
 
   return (

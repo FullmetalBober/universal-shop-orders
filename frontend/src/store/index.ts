@@ -1,10 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
-
-import categorySlice from './category-slice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+import userSlice from './user-slice';
+import categorySlice from './category-slice';
+import basketSlice from './basket-slice';
 
 const store = configureStore({
-  reducer: { category: categorySlice.reducer },
+  reducer: {
+    user: userSlice.reducer,
+    category: categorySlice.reducer,
+    basket: basketSlice.reducer,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;

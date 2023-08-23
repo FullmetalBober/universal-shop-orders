@@ -3,10 +3,11 @@ import { useForm, SubmitHandler, UseFormProps } from 'react-hook-form';
 import useAxios from 'axios-hooks';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
-import useAuth from '../../hooks/use-auth';
 import * as EmailValidator from 'email-validator';
 import AuthTemplateForm from './AuthTemplateForm';
 import Button from '../UI/Button';
+import { useAppDispatch } from '../../store';
+import { userActions } from '../../store/user-slice';
 
 type Inputs = {
   email: string;
@@ -23,7 +24,7 @@ const useFormParams: UseFormProps<Inputs> = {
 };
 
 const Login = () => {
-  const setAuth = useAuth();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [{ loading }, executePost] = useAxios(
@@ -48,14 +49,24 @@ const Login = () => {
     password: register('password', { required: true, minLength: 8 }),
   };
 
+  const userUnverified = (user: User) => {
+    if (user.verified) return false;
+
+    toast.warning('Будь ласка, підтвердьте ваш email!');
+    navigate('/auth/verify');
+  };
+
   const onSubmit: SubmitHandler<Inputs> = async data => {
     try {
       const response = await executePost({ data });
       const { data: responseData } = response;
       const { user } = responseData.data;
 
-      setAuth(user);
       toast.success('Ви успішно увійшли!');
+
+      userUnverified(user);
+
+      dispatch(userActions.signIn(user));
       navigate('/');
     } catch (error) {
       if (!(error instanceof AxiosError)) return;
