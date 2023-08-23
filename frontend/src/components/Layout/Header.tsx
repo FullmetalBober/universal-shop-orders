@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import UserMenu from './UserMenu';
 import { useAppSelector } from '../../store';
+import Loading from '../UI/Loading';
 
 const Header = () => {
-  const { isAuthenticated } = useAppSelector(state => state.user);
+  const { isAuthenticated, isLoading } = useAppSelector(state => state.user);
 
   return (
     <header class='sticky top-0 z-30 bg-base-100 bg-opacity-90 shadow-sm backdrop:blur'>
@@ -23,7 +24,8 @@ const Header = () => {
           </div>
         </div>
         <div class='navbar-end gap-2'>
-          {!isAuthenticated && (
+          {isLoading && <Loading />}
+          {!isLoading && !isAuthenticated && (
             <Link to='/auth/login' className='btn'>
               Увійти
             </Link>

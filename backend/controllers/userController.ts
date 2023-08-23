@@ -5,7 +5,7 @@ import * as factory from './handlerFactory';
 import { removeCookie } from '../utils/cookie';
 // const CloudinaryStorage = require('../utils/cloudinary');
 
-export const getUser = factory.getOne(User);
+export const getUser = factory.getOne(User, 'orders basket');
 export const getAllUsers = factory.getAll(User);
 export const updateUser = factory.updateOne(User);
 export const deleteUser = factory.deleteOne(User);
