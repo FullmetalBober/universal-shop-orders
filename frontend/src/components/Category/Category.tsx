@@ -1,10 +1,10 @@
 import { useParams, useSearchParams } from 'react-router-dom';
 import useAxios from 'axios-hooks';
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import Loading from '../UI/Loading';
 import Filter from './Filter';
 import Products from './Products';
-import Pagination from './Pagination';
+import Pagination from '../UI/Pagination';
 import { useAppSelector } from '../../store';
 
 const limit = '15';
@@ -16,9 +16,12 @@ interface Filter {
 
 const Category = () => {
   const { categorySlug } = useParams();
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   let page: string | number = searchParams.get('page') || '1';
   const [filter, setFilter] = useState<Filter[]>([]);
+
+  useEffect(() => window.scrollTo(0, 0), [page]);
+  useEffect(() => setSearchParams({ page: '1' }), [filter]);
 
   // split filter array into array of arrays with same name
   const arrayFilters = filter.reduce((acc, el) => {
@@ -39,6 +42,7 @@ const Category = () => {
   let queryParams = new URLSearchParams([]);
   const filterJson = JSON.stringify(arrayFilters);
   if (category?._id) queryParams.append('category', category._id);
+  if (filter.length > 0) queryParams.append('characteristics', filterJson);
 
   // fetch product count
   const [{ data: productCountData, loading: productCountIsLoading }] = useAxios<
@@ -47,7 +51,6 @@ const Category = () => {
   const productCount = productCountData?.data.data;
 
   // add another params to query params
-  if (filter.length > 0) queryParams.append('characteristics', filterJson);
   queryParams.append('page', page);
   queryParams.append('limit', limit);
 

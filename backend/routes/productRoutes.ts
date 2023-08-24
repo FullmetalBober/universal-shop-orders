@@ -4,7 +4,12 @@ import * as productController from './../controllers/productController';
 
 const router = express.Router();
 
-router.route('/count').get(productController.countProducts);
+router
+  .route('/count')
+  .get(
+    productController.queryParamToFilterObj,
+    productController.countProducts
+  );
 
 router
   .route('/')
@@ -12,7 +17,7 @@ router
     productController.queryParamToFilterObj,
     productController.getAllProducts
   );
-  router.route('/slug/:slug').get(productController.getProductBySlug);
+router.route('/slug/:slug').get(productController.getProductBySlug);
 
 router.route('/:id').get(productController.getProduct);
 
