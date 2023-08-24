@@ -6,11 +6,8 @@ const userRecentlyChangedPassword =
   'Користувач нещодавно змінив пароль! Будь ласка, увійдіть знову.';
 const userNotLoggedIn =
   'Ви не авторизовані! Будь ласка, увійдіть, щоб отримати доступ.';
-const emailVerification =
-  'Користувач не підтвердив свою електронну пошту! Будь ласка, підтвердьте свою електронну пошту.';
 
 const cookieName = import.meta.env.VITE_AUTH_NAME;
-const verificationPage = '/auth/verify';
 
 const logout = async () => {
   await axios.post('/api/v1/users/logout');
@@ -35,13 +32,6 @@ export const setupAxiosInterceptors = () => {
 
         // Logout if token is expired
         if (message === userNotLoggedIn) Cookies.remove(cookieName);
-
-        // Redirect to email verification page
-        if (
-          message === emailVerification &&
-          window.location.pathname !== verificationPage
-        )
-          window.location.href = verificationPage;
       }
       return Promise.reject(error);
     }

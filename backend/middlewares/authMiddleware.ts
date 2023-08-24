@@ -5,7 +5,7 @@ import User from '../models/userModel';
 import AppError from '../utils/appError';
 import env from '../env';
 
-const excludeVerifyRoute = 'nonVerified';
+const excludeVerifyRoute = 'withoutVerified';
 
 export const protect: RequestHandler = async (req, res, next) => {
   const cookieName = env.JWT_COOKIE_NAME;

@@ -49,13 +49,6 @@ const Login = () => {
     password: register('password', { required: true, minLength: 8 }),
   };
 
-  const userUnverified = (user: User) => {
-    if (user.verified) return false;
-
-    toast.warning('Будь ласка, підтвердьте ваш email!');
-    navigate('/auth/verify');
-  };
-
   const onSubmit: SubmitHandler<Inputs> = async data => {
     try {
       const response = await executePost({ data });
@@ -64,9 +57,9 @@ const Login = () => {
 
       toast.success('Ви успішно увійшли!');
 
-      userUnverified(user);
+      if (user.verified) navigate('/auth/verify');
 
-      dispatch(userActions.signIn(user));
+      dispatch(userActions.login(user));
       navigate('/');
     } catch (error) {
       if (!(error instanceof AxiosError)) return;

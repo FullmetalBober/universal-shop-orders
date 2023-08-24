@@ -8,7 +8,7 @@ export const fetchUserData = createAsyncThunk('user/fetchData', async () => {
   const cookieCheck = Cookies.get(cookieCheckName);
   if (!cookieCheck) return;
   try {
-    const data = await axios.get('/api/v1/users/me');
+    const data = await axios.get('/api/v1/users/me/withoutVerified');
     return data.data;
   } catch (error) {
     console.error(error);

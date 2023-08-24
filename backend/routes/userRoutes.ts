@@ -17,20 +17,19 @@ router.patch('/resetPassword/:token', authController.resetPassword);
 router.use(authMiddleware.protect);
 
 router.patch('/updateMyPassword', authController.updatePassword);
-router.get('/me', userController.getMe, userController.getUser);
+router.get(
+  '/me/:withoutVerified?',
+  userController.getMe,
+  userController.getUser
+);
+
 router.patch(
   '/updateMe',
   // userController.uploadMyPhoto,
   userController.updateMe
 );
 router.delete(
-  '/deleteMe',
-  authMiddleware.restrictTo('user'),
-  // userController.deleteMyPhoto,
-  userController.deleteMe
-);
-router.delete(
-  '/nonVerified/deleteMe',
+  '/deleteMe/:withoutVerified?',
   authMiddleware.restrictTo('user'),
   // userController.deleteMyPhoto,
   userController.deleteMe

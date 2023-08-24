@@ -1,8 +1,11 @@
+import { useEffect } from 'preact/hooks';
 import { useNavigate, useParams } from 'react-router-dom';
 import useAxios from 'axios-hooks';
+import { toast } from 'react-toastify';
 import Button from '../UI/Button';
 import { useAppDispatch } from '../../store';
 import { fetchUserData } from '../../store/user-actions';
+import { userActions } from '../../store/user-slice';
 
 const Verify = () => {
   const dispatch = useAppDispatch();
@@ -19,7 +22,7 @@ const Verify = () => {
   );
   const [{ loading: removeLoading }, removeUser] = useAxios(
     {
-      url: `/api/v1/users/nonVerified/deleteMe`,
+      url: `/api/v1/users/deleteMe/withoutVerified`,
       method: 'DELETE',
     },
     { manual: true }
@@ -31,9 +34,14 @@ const Verify = () => {
   }
 
   const removeUserHandler = async () => {
+    dispatch(userActions.logout());
     await removeUser();
     navigate('/auth/register');
   };
+
+  useEffect(() => {
+    toast.warning('Будь ласка, підтвердьте ваш email!');
+  }, []);
 
   const buttonLoading = activateLoading || removeLoading;
   return (

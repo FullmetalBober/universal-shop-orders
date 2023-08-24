@@ -9,11 +9,11 @@ const userSlice = createSlice({
     isLoading: true,
   },
   reducers: {
-    signIn: (state, action) => {
+    login: (state, action) => {
       state.user = action.payload;
       state.isAuthenticated = true;
     },
-    signOut(state) {
+    logout(state) {
       state.user = {} as User;
       state.isAuthenticated = false;
     },
