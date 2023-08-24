@@ -1,4 +1,4 @@
-import { Model } from 'mongoose';
+import { Model, PopulateOptions } from 'mongoose';
 import { RequestHandler } from 'express';
 import AppError from '../utils/appError';
 import APIFeatures from '../utils/apiFeatures';
@@ -52,7 +52,7 @@ export const createOne =
   };
 
 export const getOne =
-  (Model: Model<any>, popOptions?: string | string[]): RequestHandler =>
+  (Model: Model<any>, popOptions?: PopulateOptions): RequestHandler =>
   async (req, res, next) => {
     let query = Model.findById(req.params.id);
     if (popOptions) query = query.populate(popOptions);
@@ -71,7 +71,7 @@ export const getOne =
   };
 
 export const getOneBySlug =
-  (Model: Model<any>, popOptions?: string | string[]): RequestHandler =>
+  (Model: Model<any>, popOptions?: PopulateOptions): RequestHandler =>
   async (req, res, next) => {
     let query = Model.findOne({ slug: req.params.slug });
     if (popOptions) query = query.populate(popOptions);
@@ -90,7 +90,7 @@ export const getOneBySlug =
   };
 
 export const getAll =
-  (Model: Model<any>, popOptions?: string | string[]): RequestHandler =>
+  (Model: Model<any>, popOptions?: PopulateOptions): RequestHandler =>
   async (req, res, next) => {
     let query = Model.find();
 

@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-import slugifyModelFunc from '../utils/slugifyModelFunc';
+import slug from 'mongoose-slug-updater';
 
+mongoose.plugin(slug);
 const categorySchema = new mongoose.Schema(
   {
     name: {
@@ -36,14 +37,17 @@ const categorySchema = new mongoose.Schema(
         },
       },
     ],
-    slug: String,
+    slug: {
+      type: String,
+      slug: 'name',
+      unique: true,
+      index: true,
+    },
   },
   {
     timestamps: true,
   }
 );
-
-slugifyModelFunc(categorySchema, 'name');
 
 const Category = mongoose.model('Category', categorySchema);
 

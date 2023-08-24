@@ -21,7 +21,7 @@ const UserMenu = () => {
 
   const logoutHandle = async () => {
     await executePost();
-    dispatch(userActions.signOut());
+    dispatch(userActions.logout());
   };
 
   return (

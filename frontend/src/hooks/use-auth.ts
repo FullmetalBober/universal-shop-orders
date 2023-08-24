@@ -7,7 +7,7 @@ const useAuth = () => {
   return (user: User) => {
     if (!user.verified) return;
 
-    dispatch(userActions.signIn(user));
+    dispatch(userActions.login(user));
   };
 };
 

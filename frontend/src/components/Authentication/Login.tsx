@@ -7,7 +7,7 @@ import * as EmailValidator from 'email-validator';
 import AuthTemplateForm from './AuthTemplateForm';
 import Button from '../UI/Button';
 import { useAppDispatch } from '../../store';
-import { userActions } from '../../store/user-slice';
+import { fetchUserData } from '../../store/user-actions';
 
 type Inputs = {
   email: string;
@@ -59,7 +59,7 @@ const Login = () => {
 
       if (user.verified) navigate('/auth/verify');
 
-      dispatch(userActions.login(user));
+      dispatch(fetchUserData());
       navigate('/');
     } catch (error) {
       if (!(error instanceof AxiosError)) return;

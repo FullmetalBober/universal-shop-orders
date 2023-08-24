@@ -1,11 +1,12 @@
 import mongoose from 'mongoose';
-import slugifyModelFunc from '../utils/slugifyModelFunc';
+import slug from 'mongoose-slug-updater';
+import { text } from 'stream/consumers';
 
+mongoose.plugin(slug);
 const productSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      unique: true,
       trim: true,
       required: [true, 'Product must have a name'],
     },
@@ -54,14 +55,26 @@ const productSchema = new mongoose.Schema(
         },
       },
     ],
-    slug: String,
+    slug: {
+      type: String,
+      slug: ['name', 'characteristics.parameter'],
+      slugPaddingSize: 4,
+      unique: true,
+      index: true,
+    },
   },
   {
     timestamps: true,
   }
 );
 
-slugifyModelFunc(productSchema, 'name');
+productSchema.index({
+  _id: 'text',
+  name: 'text',
+  slug: 'text',
+  brand: 'text',
+  'characteristics.parameter': 'text',
+});
 
 const Product = mongoose.model('Product', productSchema);
 

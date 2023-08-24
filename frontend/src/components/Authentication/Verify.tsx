@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useAxios from 'axios-hooks';
 import { toast } from 'react-toastify';
 import Button from '../UI/Button';
-import { useAppDispatch } from '../../store';
+import { useAppDispatch, useAppSelector } from '../../store';
 import { fetchUserData } from '../../store/user-actions';
 import { userActions } from '../../store/user-slice';
 
@@ -11,6 +11,7 @@ const Verify = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { emailToken } = useParams();
+  const { user } = useAppSelector(state => state.user);
   const [
     { data: activateData, loading: activateLoading, error: activateError },
   ] = useAxios(
@@ -49,7 +50,7 @@ const Verify = () => {
       <section class='hero min-h-screen bg-base-200'>
         <div class='hero-content text-center'>
           <div class='max-w-md'>
-            <h1 class='text-5xl font-bold'>Підтвердження email</h1>
+            <h1 class='text-5xl font-bold'>Підтвердьте email {user.email}</h1>
             <p class='py-6'>
               {!activateError &&
                 `Схоже, що ви ще не підтвердили свій email. Будь ласка, перевірте
