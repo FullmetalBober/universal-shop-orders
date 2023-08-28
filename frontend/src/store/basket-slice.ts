@@ -1,16 +1,23 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { createBasket, updateBasket } from './basket-actions';
 
+interface BasketState {
+  basket?: Basket;
+  isLoading: boolean;
+}
+
+const initialState: BasketState = {
+  basket: undefined,
+  isLoading: true,
+};
+
 const basketSlice = createSlice({
   name: 'basket',
-  initialState: {
-    basket: {} as Basket,
-    isLoading: true,
-  },
+  initialState,
   reducers: {
     replaceBasket(state, action) {
       state.basket = action.payload;
-      if (action.payload) state.isLoading = false;
+      state.isLoading = false;
     },
   },
   extraReducers: builder => {

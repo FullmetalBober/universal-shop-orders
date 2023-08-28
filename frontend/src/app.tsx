@@ -1,16 +1,17 @@
 import { useEffect } from 'preact/hooks';
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import Home from './components/Home/Home';
 import { useAppDispatch, useAppSelector } from './store';
 import { fetchUserData } from './store/user-actions';
 import { createBasket } from './store/basket-actions';
 import { fetchCategoryData } from './store/category-actions';
 import { basketActions } from './store/basket-slice';
+import Home from './components/Home/Home';
 import Category from './components/Category/Category';
 import Product from './components/Product/Product';
 import Login from './components/Authentication/Login';
 import Register from './components/Authentication/Register';
 import Verify from './components/Authentication/Verify';
+import Basket from './components/Basket/Basket';
 import Layout from './components/Layout/Layout';
 import 'react-multi-carousel/lib/styles.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -45,6 +46,7 @@ export function App() {
         <Route path='/auth/login' element={<Login />} />
         <Route path='/auth/register' element={<Register />} />
         <Route path='/auth/verify/:emailToken?' element={<Verify />} />
+        <Route path='/basket' element={<Basket />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Layout>

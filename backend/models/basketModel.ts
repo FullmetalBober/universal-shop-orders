@@ -14,7 +14,6 @@ const basketSchema = new mongoose.Schema(
           product: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Product',
-            unique: true,
             required: [true, 'Basket must belong to a product'],
           },
           quantity: {

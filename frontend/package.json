@@ -17,6 +17,7 @@
     "js-cookie": "^3.0.5",
     "preact": "^10.15.1",
     "react-hook-form": "^7.45.4",
+    "react-icons": "^4.10.1",
     "react-multi-carousel": "^2.8.4",
     "react-redux": "^8.1.1",
     "react-router-dom": "^6.15.0",
