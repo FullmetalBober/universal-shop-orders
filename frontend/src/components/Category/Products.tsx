@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { currencyFormatter } from '../../utils/text';
 import ProductInfo from '../UI/ProductInfo';
+import BasketButton from '../UI/BasketButton';
 
 interface Props {
   products: Product[];
@@ -37,7 +38,7 @@ const Products = (props: Props) => {
               />
             }
             <div class='card-actions justify-end'>
-              <button class='btn btn-primary'>У кошик</button>
+              <BasketButton product={product} />
             </div>
           </div>
         </div>

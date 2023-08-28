@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import userSlice from './user-slice';
+import basketSlice from './basket-slice';
 import categorySlice from './category-slice';
 
 const store = configureStore({
   reducer: {
     user: userSlice.reducer,
+    basket: basketSlice.reducer,
     category: categorySlice.reducer,
   },
 });

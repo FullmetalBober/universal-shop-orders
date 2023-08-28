@@ -3,8 +3,8 @@ import useAxios from 'axios-hooks';
 import Gallery from './Gallery';
 import Loading from '../UI/Loading';
 import ProductInfo from '../UI/ProductInfo';
-import Button from '../UI/Button';
 import { currencyFormatter } from '../../utils/text';
+import BasketButton from '../UI/BasketButton';
 
 const defaultImg = '/images/productDefault.jpg';
 
@@ -24,7 +24,6 @@ const Product = () => {
   let imgs = [defaultImg];
   imgs = [product.imageCover, ...product.images];
 
-  const buttonDisabled = product.stock <= 0;
   return (
     <main class='hero justify-items-start bg-base-200'>
       <div class='hero-content flex-col justify-items-start lg:flex-row'>
@@ -39,9 +38,7 @@ const Product = () => {
               class='py-6 child:badge-lg'
             />
           }
-          <Button disabled={buttonDisabled} class='btn btn-primary'>
-            У кошик
-          </Button>
+          <BasketButton product={product} />
         </div>
       </div>
     </main>

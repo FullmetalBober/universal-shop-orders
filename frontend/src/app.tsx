@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from './store';
 import { fetchUserData } from './store/user-actions';
 import { createBasket } from './store/basket-actions';
 import { fetchCategoryData } from './store/category-actions';
+import { basketActions } from './store/basket-slice';
 import Category from './components/Category/Category';
 import Product from './components/Product/Product';
 import Login from './components/Authentication/Login';
@@ -27,8 +28,8 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    console.log('basket create effect');
     if (user.verified && !user.basket) dispatch(createBasket());
+    dispatch(basketActions.replaceBasket(user.basket));
   }, [user.verified, user.basket]);
 
   // if user not verified redirect to verify page

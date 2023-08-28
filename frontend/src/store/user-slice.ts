@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchUserData } from './user-actions';
-import { createBasket } from './basket-actions';
 
 const userSlice = createSlice({
   name: 'user',
@@ -10,7 +9,6 @@ const userSlice = createSlice({
     isLoading: true,
   },
   reducers: {
-    // user control
     login: (state, action) => {
       state.user = action.payload;
       state.isAuthenticated = true;
@@ -23,7 +21,6 @@ const userSlice = createSlice({
       state.user = action.payload;
     },
   },
-  // user control
   extraReducers: builder => {
     builder.addCase(fetchUserData.pending, state => {
       state.isLoading = true;
@@ -34,11 +31,6 @@ const userSlice = createSlice({
         state.isAuthenticated = true;
       }
       state.isLoading = false;
-    });
-
-    builder.addCase(createBasket.fulfilled, (state, action) => {
-      if (action.payload && action.payload.status === 'success')
-        state.user.basket = action.payload.data.data;
     });
   },
 });
