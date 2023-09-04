@@ -79,9 +79,9 @@ const Category = () => {
   page = +page;
   if (categoriesIsLoading) return <Loading />;
   return (
-    <main class='my-2 gap-3 md:flex'>
+    <main className='my-2 gap-3 md:flex'>
       <Filter category={category!} onFilterChange={onFilterChange} />
-      <div class='grow'>
+      <div className='grow'>
         {(productsIsLoading || productCountIsLoading) && <Loading />}
         {products && <Products products={products} />}
         {!!productCount && (

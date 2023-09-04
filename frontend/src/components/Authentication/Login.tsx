@@ -77,16 +77,16 @@ const Login = () => {
         description={
           <>
             Якщо у вас ще немає облікового запису, ви можете{' '}
-            <Link to='/auth/register' class='link-primary link font-bold'>
+            <Link to='/auth/register' className='link-primary link font-bold'>
               зареєструватися
             </Link>
             .
           </>
         }
       >
-        <div class='form-control'>
-          <label for='email' class='label'>
-            <span class='label-text'>Email</span>
+        <div className='form-control'>
+          <label for='email' className='label'>
+            <span className='label-text'>Email</span>
           </label>
           <input
             type='email'
@@ -96,9 +96,9 @@ const Login = () => {
             {...registers.email}
           />
         </div>
-        <div class='form-control'>
-          <label for='password' class='label'>
-            <span class='label-text'>Пароль</span>
+        <div className='form-control'>
+          <label for='password' className='label'>
+            <span className='label-text'>Пароль</span>
           </label>
           <input
             type='password'
@@ -107,17 +107,17 @@ const Login = () => {
             class={inputClass(!!errors.password)}
             {...registers.password}
           />
-          <label class='label'>
-            <Link to='/auth/reset' class='link-hover link label-text-alt'>
+          <label className='label'>
+            <Link to='/auth/reset' className='link-hover link label-text-alt'>
               Забули пароль?
             </Link>
           </label>
         </div>
-        <div class='form-control mt-6'>
+        <div className='form-control mt-6'>
           <Button
             loadingMode={loading}
             disabled={buttonDisabled}
-            class='btn btn-primary'
+            className='btn btn-primary'
           >
             Увійти
           </Button>

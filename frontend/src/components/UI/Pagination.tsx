@@ -37,8 +37,8 @@ const Pagination = (props: Props) => {
   };
 
   return (
-    <aside class='flex justify-center'>
-      <nav class='join'>
+    <aside className='flex justify-center'>
+      <nav className='join'>
         {pages.map((page, index) => (
           <Link
             key={index}

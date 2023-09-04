@@ -19,7 +19,7 @@ const Gallery = (props: Props) => {
   const { images } = props;
 
   return (
-    <section class='w-80 max-w-sm rounded-lg shadow-2xl'>
+    <section className='w-80 max-w-sm rounded-lg shadow-2xl'>
       {images.length > 1 && (
         <Carousel
           responsive={responsive}

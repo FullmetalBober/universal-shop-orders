@@ -7,6 +7,7 @@ const router = express.Router();
 router.use(authMiddleware.protect);
 router.use(authMiddleware.setUserId);
 
+router.route('/').get(basketController.getAllBaskets);
 router.route('/:id').get(basketController.getBasket);
 
 router.route('/').post(basketController.createBasket);
@@ -16,8 +17,6 @@ router
   .patch(basketController.updateBasket)
   .delete(basketController.deleteBasket);
 
-router.use(authMiddleware.restrictTo('moderator', 'admin'));
-
-router.route('/').get(basketController.getAllBaskets);
+// router.use(authMiddleware.restrictTo('moderator', 'admin'));
 
 export default router;

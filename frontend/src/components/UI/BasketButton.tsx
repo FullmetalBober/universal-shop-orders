@@ -48,7 +48,7 @@ const BasketButton = (props: IProps) => {
   const buttonDisabled = product.stock <= 0;
   if (isLoading)
     return (
-      <button class='btn btn-primary' disabled>
+      <button className='btn btn-primary' disabled>
         <Loading /> Завантаження
       </button>
     );
@@ -58,27 +58,27 @@ const BasketButton = (props: IProps) => {
         <Button
           onClick={addToBasketHandler}
           disabled={buttonDisabled}
-          class='btn btn-primary'
+          className='btn btn-primary'
         >
           У кошик
         </Button>
       )}
       {quantity && (
-        <div class='join'>
+        <div className='join'>
           <Button
             onClick={subtractFromBasketHandler}
             disabled={buttonDisabled}
-            class='btn btn-primary join-item'
+            className='btn btn-primary join-item'
           >
             -
           </Button>
 
-          <span class='btn join-item'>{quantity}</span>
+          <span className='btn join-item'>{quantity}</span>
 
           <Button
             onClick={addToBasketHandler}
             disabled={buttonDisabled}
-            class='btn btn-primary join-item'
+            className='btn btn-primary join-item'
           >
             +
           </Button>

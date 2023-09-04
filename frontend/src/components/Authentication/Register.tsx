@@ -84,16 +84,16 @@ const Register = () => {
         description={
           <>
             Якщо ви вже маєте обліковий запис, ви можете{' '}
-            <Link to='/auth/login' class='link-primary link font-bold'>
+            <Link to='/auth/login' className='link-primary link font-bold'>
               авторизуватися
             </Link>
             .
           </>
         }
       >
-        <div class='form-control'>
-          <label for='email' class='label'>
-            <span class='label-text'>Email</span>
+        <div className='form-control'>
+          <label for='email' className='label'>
+            <span className='label-text'>Email</span>
           </label>
           <input
             type='email'
@@ -103,9 +103,9 @@ const Register = () => {
             {...registers.email}
           />
         </div>
-        <div class='form-control'>
-          <label for='name' class='label'>
-            <span class='label-text'>Ім'я</span>
+        <div className='form-control'>
+          <label for='name' className='label'>
+            <span className='label-text'>Ім'я</span>
           </label>
           <input
             type='name'
@@ -115,9 +115,9 @@ const Register = () => {
             {...registers.name}
           />
         </div>
-        <div class='form-control'>
-          <label for='password' class='label'>
-            <span class='label-text'>Пароль</span>
+        <div className='form-control'>
+          <label for='password' className='label'>
+            <span className='label-text'>Пароль</span>
           </label>
           <input
             type='password'
@@ -127,9 +127,9 @@ const Register = () => {
             {...registers.password}
           />
         </div>
-        <div class='form-control'>
-          <label for='passwordConfirm' class='label'>
-            <span class='label-text'>Підтвердження паролю</span>
+        <div className='form-control'>
+          <label for='passwordConfirm' className='label'>
+            <span className='label-text'>Підтвердження паролю</span>
           </label>
           <input
             type='password'
@@ -139,11 +139,11 @@ const Register = () => {
             {...registers.passwordConfirm}
           />
         </div>
-        <div class='form-control mt-6'>
+        <div className='form-control mt-6'>
           <Button
             loadingMode={loading}
             disabled={buttonDisabled}
-            class='btn btn-primary'
+            className='btn btn-primary'
           >
             Зареєструватися
           </Button>

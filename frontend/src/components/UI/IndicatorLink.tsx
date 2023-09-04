@@ -13,7 +13,7 @@ const IndicatorLink = (props: IProps) => {
   return (
     <Link to={to} className='group btn btn-ghost indicator text-2xl'>
       {isVisible && (
-        <span class='badge indicator-item badge-secondary mr-1 mt-1'>
+        <span className='badge indicator-item badge-secondary mr-1 mt-1'>
           {value}
         </span>
       )}

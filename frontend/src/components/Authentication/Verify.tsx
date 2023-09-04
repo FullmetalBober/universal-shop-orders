@@ -47,11 +47,13 @@ const Verify = () => {
   const buttonLoading = activateLoading || removeLoading;
   return (
     <main>
-      <section class='hero min-h-screen bg-base-200'>
-        <div class='hero-content text-center'>
-          <div class='max-w-md'>
-            <h1 class='text-5xl font-bold'>Підтвердьте email {user.email}</h1>
-            <p class='py-6'>
+      <section className='hero min-h-screen bg-base-200'>
+        <div className='hero-content text-center'>
+          <div className='max-w-md'>
+            <h1 className='text-5xl font-bold'>
+              Підтвердьте email {user.email}
+            </h1>
+            <p className='py-6'>
               {!activateError &&
                 `Схоже, що ви ще не підтвердили свій email. Будь ласка, перевірте
               свою поштову скриньку і перейдіть за посиланням, яке ми вам
@@ -63,7 +65,7 @@ const Verify = () => {
             <Button
               onClick={removeUserHandler}
               loadingMode={buttonLoading}
-              class='btn btn-warning'
+              className='btn btn-warning'
             >
               Зареєструватися знову
             </Button>

@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom';
-import useAxios from 'axios-hooks';
+import { useQuery } from '@tanstack/react-query';
 import Carousel from 'react-multi-carousel';
 import Loading from '../UI/Loading';
 import { currencyFormatter } from '../../utils/text';
+import { getNoveltyProducts } from '../../api/products';
 
 const responsive = {
   desktop: {
@@ -20,17 +21,16 @@ const responsive = {
 };
 
 const Novelty = () => {
-  const [{ data, loading: isLoading }] = useAxios<Response<Product[]>>({
-    url: '/api/v1/products',
-    params: { limit: 20 },
+  const productsNoveltyQuery = useQuery({
+    queryKey: ['products', 'novelty'],
+    queryFn: () => getNoveltyProducts(),
   });
-  const products = data?.data.data;
 
+  if (productsNoveltyQuery.isLoading) return <Loading />;
   return (
     <section>
-      <h1 class='card-title text-2xl'>Новинка</h1>
-      {isLoading && <Loading />}
-      {products && (
+      <h1 className='card-title text-2xl'>Новинка</h1>
+      {productsNoveltyQuery.data && (
         <Carousel
           responsive={responsive}
           arrows
@@ -39,22 +39,24 @@ const Novelty = () => {
           infinite
           containerClass='shadow-xl rounded-lg'
         >
-          {products.map(product => (
+          {productsNoveltyQuery.data.map(product => (
             <Link
               to={`/product/${product.slug}`}
               key={product._id}
-              class='xs:max-w-xs card card-compact bg-base-100'
+              className='xs:max-w-xs card card-compact bg-base-100'
             >
               <figure>
                 <img
                   src={product.imageCover}
                   alt={product.name}
-                  class='rounded-lg'
+                  className='rounded-lg'
                 />
               </figure>
-              <div class='card-body items-center text-center'>
-                <h2 class='card-title'>{product.name}</h2>
-                <h3 class='card-title'>{currencyFormatter(product.price)}</h3>
+              <div className='card-body items-center text-center'>
+                <h2 className='card-title'>{product.name}</h2>
+                <h3 className='card-title'>
+                  {currencyFormatter(product.price)}
+                </h3>
               </div>
             </Link>
           ))}

@@ -19,25 +19,29 @@ const Products = (props: Props) => {
       {products.map(product => (
         <div
           key={product._id}
-          class='card card-side card-compact my-3 bg-base-100 shadow-xl md:card-normal'
+          className='card card-side card-compact my-3 bg-base-100 shadow-xl md:card-normal'
         >
           <figure>
-            <Link to={setHref(product.slug)} class='flex items-center'>
-              <img src={product.imageCover} alt='Movie' class='w-32 md:w-56' />
+            <Link to={setHref(product.slug)} className='flex items-center'>
+              <img
+                src={product.imageCover}
+                alt={product.name}
+                className='w-32 md:w-56'
+              />
             </Link>
           </figure>
-          <div class='card-body'>
-            <h2 class='card-title'>
+          <div className='card-body'>
+            <h2 className='card-title'>
               <Link to={setHref(product.slug)}>{product.name}</Link>
             </h2>
-            <h3 class='card-title'>{currencyFormatter(product.price)}</h3>
+            <h3 className='card-title'>{currencyFormatter(product.price)}</h3>
             {
               <ProductInfo
                 _id={product._id}
                 parameters={product.characteristics}
               />
             }
-            <div class='card-actions justify-end'>
+            <div className='card-actions justify-end'>
               <BasketButton product={product} />
             </div>
           </div>

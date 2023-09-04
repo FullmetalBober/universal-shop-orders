@@ -25,17 +25,19 @@ const Product = () => {
   imgs = [product.imageCover, ...product.images];
 
   return (
-    <main class='hero justify-items-start bg-base-200'>
-      <div class='hero-content flex-col justify-items-start lg:flex-row'>
+    <main className='hero justify-items-start bg-base-200'>
+      <div className='hero-content flex-col justify-items-start lg:flex-row'>
         {product && <Gallery images={imgs} />}
         <div>
-          <h1 class='text-5xl font-bold'>{product.name}</h1>
-          <h2 class='text-4xl font-bold'>{currencyFormatter(product.price)}</h2>
+          <h1 className='text-5xl font-bold'>{product.name}</h1>
+          <h2 className='text-4xl font-bold'>
+            {currencyFormatter(product.price)}
+          </h2>
           {
             <ProductInfo
               _id={product._id}
               parameters={product.characteristics}
-              class='py-6 child:badge-lg'
+              className='py-6 child:badge-lg'
             />
           }
           <BasketButton product={product} />

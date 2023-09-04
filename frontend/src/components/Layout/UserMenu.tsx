@@ -1,51 +1,57 @@
 import { Link } from 'react-router-dom';
-import useAxios from 'axios-hooks';
-import { useAppDispatch, useAppSelector } from '../../store';
-import { userActions } from '../../store/user-slice';
+import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
+import { getUser, logoutUser } from '../../api/users';
 
 const UserMenu = () => {
-  const dispatch = useAppDispatch();
-  const { user } = useAppSelector(state => state.user);
+  const userQuery = useQuery({
+    queryKey: ['user'],
+    queryFn: () => getUser(),
+  });
 
-  const [{}, executePost] = useAxios(
-    {
-      url: '/api/v1/users/logout',
-      method: 'POST',
+  const queryClient = useQueryClient();
+  const logoutUserMutation = useMutation({
+    mutationFn: logoutUser,
+    onSuccess: () => {
+      queryClient.setQueryData(['user'], null);
+      queryClient.setQueryData(['basket'], null);
+      queryClient.setQueryData(['orders'], null);
     },
-    { manual: true }
-  );
+  });
 
-  const { name, image } = user;
+  if (!userQuery.data) return null;
+  const { name, image } = userQuery.data;
 
   const nameFirstLetter = name.charAt(0);
 
-  const logoutHandle = async () => {
-    await executePost();
-    dispatch(userActions.logout());
+  const logoutHandle = () => {
+    logoutUserMutation.mutate();
   };
 
   return (
-    <div class='dropdown dropdown-end'>
-      <label tabIndex={0} class='avatar placeholder btn btn-circle btn-ghost'>
-        <div class='w-10 rounded-full bg-neutral-focus text-neutral-content'>
+    <div className='dropdown dropdown-end'>
+      <label
+        tabIndex={0}
+        className='avatar placeholder btn btn-circle btn-ghost'
+      >
+        <div className='w-10 rounded-full bg-neutral-focus text-neutral-content'>
           {image && <img src={image} />}
-          {!image && <span class='text-3xl'>{nameFirstLetter}</span>}
+          {!image && <span className='text-3xl'>{nameFirstLetter}</span>}
         </div>
       </label>
       <ul
         tabIndex={0}
-        class='menu dropdown-content rounded-box menu-sm z-[1] mt-3 w-52 bg-base-100 p-2 shadow'
+        className='menu dropdown-content rounded-box menu-sm z-[1] mt-3 w-52 bg-base-100 p-2 shadow'
       >
         <li>
-          <Link to='/profile' class='justify-between'>
-            Profile
+          <Link to='/profile' className='justify-between'>
+            Профіль
           </Link>
         </li>
         <li>
-          <Link to='/setting'>Settings</Link>
+          <Link to='/setting'>Налаштування</Link>
         </li>
         <li>
-          <button onClick={logoutHandle}>Logout</button>
+          <button onClick={logoutHandle}>Вихід</button>
         </li>
       </ul>
     </div>

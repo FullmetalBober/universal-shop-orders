@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 import slug from 'mongoose-slug-updater';
-import { text } from 'stream/consumers';
 
 mongoose.plugin(slug);
 const productSchema = new mongoose.Schema(
@@ -30,10 +29,6 @@ const productSchema = new mongoose.Schema(
         trim: true,
       },
     ],
-    brand: {
-      type: String,
-      trim: true,
-    },
     stock: {
       type: Number,
       min: 0,
@@ -72,7 +67,6 @@ productSchema.index({
   _id: 'text',
   name: 'text',
   slug: 'text',
-  brand: 'text',
   'characteristics.parameter': 'text',
 });
 

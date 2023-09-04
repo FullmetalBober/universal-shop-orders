@@ -1,5 +1,5 @@
 interface Props {
-  class?: string;
+  className?: string;
   _id: string;
   parameters: {
     _id: string;
@@ -15,12 +15,12 @@ const productId = (id: string) => {
 const ProductInfo = (props: Props) => {
   const { _id, parameters } = props;
 
-  const wrapperClass = `flex flex-wrap gap-1 ${props.class}`;
+  const wrapperClass = `flex flex-wrap gap-1 ${props.className}`;
   return (
     <p class={wrapperClass}>
-      <div class='badge badge-outline'>ID: {productId(_id)}</div>
+      <div className='badge badge-outline'>ID: {productId(_id)}</div>
       {parameters.map(characteristic => (
-        <div key={characteristic._id} class='badge badge-outline'>
+        <div key={characteristic._id} className='badge badge-outline'>
           {characteristic.parameter}
         </div>
       ))}

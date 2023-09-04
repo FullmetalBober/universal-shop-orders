@@ -15,30 +15,30 @@ const Filter = (props: Props) => {
   };
 
   return (
-    <section class='md:w-[345px]'>
+    <section className='md:w-[345px]'>
       {category &&
         category.characteristics.map(characteristic => (
           <div
             key={characteristic._id}
-            class='collapse collapse-arrow my-1 border border-base-300 bg-base-200'
+            className='collapse collapse-arrow my-1 border border-base-300 bg-base-200'
           >
             <input type='checkbox' />
-            <div class='collapse-title text-xl font-medium'>
+            <div className='collapse-title text-xl font-medium'>
               {capitalizeFirstLetter(characteristic.name)}
             </div>
-            <div class='collapse-content'>
+            <div className='collapse-content'>
               <p>
                 {characteristic.parameters.map(param => (
-                  <div key={param} class='form-control'>
-                    <label class='label cursor-pointer justify-start gap-2'>
+                  <div key={param} className='form-control'>
+                    <label className='label cursor-pointer justify-start gap-2'>
                       <input
                         type='checkbox'
                         name={characteristic.name}
                         value={param}
                         onChange={handleFilterChanged}
-                        class='checkbox checkbox-sm'
+                        className='checkbox checkbox-sm'
                       />
-                      <span class='label-text'>
+                      <span className='label-text'>
                         {capitalizeFirstLetter(param)}
                       </span>
                     </label>
