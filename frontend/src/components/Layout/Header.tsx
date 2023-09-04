@@ -50,7 +50,7 @@ const Header = () => {
             </IndicatorLink>
           )}
 
-          {userQuery.isLoading && <Loading />}
+          {userQuery.isInitialLoading && <Loading />}
           {!userQuery.data && (
             <Link to='/auth/login' className='btn'>
               Увійти

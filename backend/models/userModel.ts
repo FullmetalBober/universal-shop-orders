@@ -83,8 +83,6 @@ const userSchema = new mongoose.Schema<IUser>(
   },
   {
     timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true },
   }
 );
 
@@ -100,19 +98,6 @@ userSchema.index(
   { role: 1 },
   { unique: true, partialFilterExpression: { role: 'admin' } }
 );
-
-userSchema.virtual('orders', {
-  ref: 'Order',
-  foreignField: 'user',
-  localField: '_id',
-});
-
-userSchema.virtual('basket', {
-  ref: 'Basket',
-  foreignField: 'user',
-  localField: '_id',
-  justOne: true,
-});
 
 userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();

@@ -7,8 +7,9 @@ const router = express.Router();
 router.use(authMiddleware.protect);
 router.use(authMiddleware.setUserId);
 
-router.route('/').get(basketController.getAllBaskets);
-router.route('/:id').get(basketController.getBasket);
+router.route('/').get(basketController.getBasketByUser);
+// router.route('/').get(basketController.getAllBaskets);
+// router.route('/:id').get(basketController.getBasket);
 
 router.route('/').post(basketController.createBasket);
 

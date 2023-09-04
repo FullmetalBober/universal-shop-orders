@@ -1,11 +1,12 @@
 import { useParams, useSearchParams } from 'react-router-dom';
-import useAxios from 'axios-hooks';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'preact/hooks';
 import Loading from '../UI/Loading';
 import Filter from './Filter';
 import Products from './Products';
 import Pagination from '../UI/Pagination';
-import { useAppSelector } from '../../store';
+import { getCountProducts, getProducts } from '../../api/products';
+import { getCategories } from '../../api/categories';
 
 const limit = '15';
 
@@ -33,32 +34,41 @@ const Category = () => {
   }, [] as Filter[][]);
 
   // get category
-  const { isLoading: categoriesIsLoading, categories } = useAppSelector(
-    state => state.category
-  );
-  const category = categories.find(category => category.slug === categorySlug);
+  const categoriesQuery = useQuery({
+    queryKey: ['categories'],
+    queryFn: () => getCategories(),
+    enabled: !!categorySlug,
+    select: categories =>
+      categories.find(category => category.slug === categorySlug),
+  });
+
+  if (!categoriesQuery.data) return <div>404</div>; //TODO 404 page
 
   // create query params
-  let queryParams = new URLSearchParams([]);
+  let queryParams: QueryObject = {};
   const filterJson = JSON.stringify(arrayFilters);
-  if (category?._id) queryParams.append('category', category._id);
-  if (filter.length > 0) queryParams.append('characteristics', filterJson);
+  if (categoriesQuery.data?._id)
+    queryParams.category = categoriesQuery.data._id;
+  if (filter.length > 0) queryParams.characteristics = filterJson;
 
   // fetch product count
-  const [{ data: productCountData, loading: productCountIsLoading }] = useAxios<
-    Response<number>
-  >(`/api/v1/products/count?${queryParams}`, { manual: !category });
-  const productCount = productCountData?.data.data;
+  const productsCountQuery = useQuery({
+    queryKey: ['products', 'count', queryParams],
+    queryFn: () => getCountProducts(queryParams),
+    enabled: !!categoriesQuery.data,
+  });
 
   // add another params to query params
-  queryParams.append('page', page);
-  queryParams.append('limit', limit);
+  queryParams.page = page;
+  queryParams.limit = limit;
 
   // fetch products
-  const [{ data: productsData, loading: productsIsLoading }] = useAxios<
-    Response<Product[]>
-  >(`/api/v1/products?${queryParams}`, { manual: !category });
-  const products = productsData?.data.data;
+  const productsQuery = useQuery({
+    queryKey: ['products', queryParams],
+    queryFn: () => getProducts(queryParams),
+    enabled: !!categoriesQuery.data,
+    notifyOnChangeProps: ['data'],
+  });
 
   // handle filter change
   const onFilterChange = (name: string, parameter: string) => {
@@ -75,16 +85,22 @@ const Category = () => {
   };
 
   const pageChangeHref = `/category/${categorySlug}`;
-  const totalPages = Math.ceil(productCount! / +limit);
+  const productsCount = productsCountQuery.data || 0;
+  const totalPages = Math.ceil(productsCount / +limit);
   page = +page;
-  if (categoriesIsLoading) return <Loading />;
+  if (categoriesQuery.isLoading) return <Loading />;
   return (
     <main className='my-2 gap-3 md:flex'>
-      <Filter category={category!} onFilterChange={onFilterChange} />
+      <Filter
+        category={categoriesQuery.data!}
+        onFilterChange={onFilterChange}
+      />
       <div className='grow'>
-        {(productsIsLoading || productCountIsLoading) && <Loading />}
-        {products && <Products products={products} />}
-        {!!productCount && (
+        {(productsQuery.isLoading || productsCountQuery.isLoading) && (
+          <Loading />
+        )}
+        {productsQuery.data && <Products products={productsQuery.data} />}
+        {!!productsCountQuery.data && (
           <Pagination
             totalPages={totalPages}
             currentPage={page}

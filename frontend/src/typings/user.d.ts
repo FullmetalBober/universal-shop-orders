@@ -5,6 +5,4 @@ declare interface User {
   image: string;
   role: string;
   verified: boolean;
-  basket: Basket;
-  orders: Order[];
 }

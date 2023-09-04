@@ -7,6 +7,7 @@ const basketSchema = new mongoose.Schema(
       ref: 'User',
       required: [true, 'Basket must belong to a user'],
       unique: true,
+      immutable: true,
     },
     products: {
       type: [
