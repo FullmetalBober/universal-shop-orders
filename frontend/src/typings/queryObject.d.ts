@@ -1,3 +1,3 @@
-declare interface QueryObject {
+declare type QueryObject = {
   [key: string]: string | number | undefined;
-}
+};

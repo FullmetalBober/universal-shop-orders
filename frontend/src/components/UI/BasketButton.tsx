@@ -6,15 +6,15 @@ import Button from './Button';
 import Loading from './Loading';
 import getId from '../../utils/getId';
 
-interface IProps {
+type Props = {
   product: Product;
-}
+};
 
 const toObjDispatch = (productId: string, quantity: number) => {
   return { productId, quantity };
 };
 
-const BasketButton = (props: IProps) => {
+const BasketButton = (props: Props) => {
   const { product } = props;
   const dispatch = useAppDispatch();
 

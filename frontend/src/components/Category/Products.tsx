@@ -3,9 +3,9 @@ import { currencyFormatter } from '../../utils/text';
 import ProductInfo from '../UI/ProductInfo';
 import BasketButton from '../UI/BasketButton';
 
-interface Props {
+type Props = {
   products: Product[];
-}
+};
 
 const setHref = (slug: string) => {
   return `/product/${slug}`;

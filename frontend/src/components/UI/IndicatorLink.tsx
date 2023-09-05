@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 
-interface IProps {
+type Props = {
   children: JSX.Element | JSX.Element[];
   value: number;
   to: string;
-}
+};
 
-const IndicatorLink = (props: IProps) => {
+const IndicatorLink = (props: Props) => {
   const { children, value, to } = props;
 
   const isVisible = value > 0;

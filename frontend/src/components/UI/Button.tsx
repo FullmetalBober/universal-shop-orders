@@ -1,10 +1,10 @@
 import Loading from './Loading';
 
-interface IProps extends React.HTMLAttributes<HTMLButtonElement> {
+type Props = React.HTMLAttributes<HTMLButtonElement> & {
   loadingMode?: boolean;
-}
+};
 
-const Button = (props: IProps) => {
+const Button = (props: Props) => {
   const { loadingMode } = props;
 
   return (

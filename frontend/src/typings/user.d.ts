@@ -1,4 +1,4 @@
-declare interface User {
+declare type User = {
   _id: string;
   name: string;
   email: string;

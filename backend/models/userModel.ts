@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import validator from 'validator';
 import bcrypt from 'bcryptjs';
 
-export interface IUser extends mongoose.Document {
+export type IUser = mongoose.Document & {
   name: string;
   email: string;
   image: string;
@@ -21,7 +21,7 @@ export interface IUser extends mongoose.Document {
     userPassword: string
   ) => Promise<boolean>;
   createResetToken: (field: 'emailActivate' | 'passwordReset') => string;
-}
+};
 
 const userSchema = new mongoose.Schema<IUser>(
   {

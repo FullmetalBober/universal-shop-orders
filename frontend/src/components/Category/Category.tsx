@@ -10,10 +10,10 @@ import { getCategories } from '../../api/categories';
 
 const limit = '15';
 
-interface Filter {
+type Filter = {
   name: string;
   parameter: string;
-}
+};
 
 const Category = () => {
   const { categorySlug } = useParams();

@@ -1,4 +1,4 @@
-declare interface Category {
+declare type Category = {
   _id: string;
   name: string;
   menuType: string;
@@ -8,4 +8,4 @@ declare interface Category {
     parameters: string[];
   }[];
   slug: string;
-}
+};

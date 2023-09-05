@@ -1,4 +1,4 @@
-interface Props {
+type Props = {
   className?: string;
   _id: string;
   parameters: {
@@ -6,7 +6,7 @@ interface Props {
     name: string;
     parameter: string;
   }[];
-}
+};
 
 const productId = (id: string) => {
   return id.slice(0, 8);

@@ -2,9 +2,9 @@ import { ToastContainer } from 'react-toastify';
 import Footer from './Footer';
 import Header from './Header';
 
-interface Props {
+type Props = {
   children: JSX.Element | JSX.Element[];
-}
+};
 
 const Layout = (props: Props) => {
   const { children } = props;

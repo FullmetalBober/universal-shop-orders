@@ -1,9 +1,9 @@
-interface Props {
+type Props = {
   children: JSX.Element | JSX.Element[];
   heading: JSX.Element | string;
   description: JSX.Element | string;
   onSubmit: (event: Event) => void;
-}
+};
 
 const AuthTemplateForm = (props: Props) => {
   const { children, heading, description, onSubmit } = props;

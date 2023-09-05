@@ -1,8 +1,8 @@
 import Carousel from 'react-multi-carousel';
 
-interface Props {
+type Props = {
   images: string[];
-}
+};
 
 const responsive = {
   all: {

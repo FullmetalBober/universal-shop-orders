@@ -1,10 +1,10 @@
 import { ChangeEvent } from 'preact/compat';
 import { capitalizeFirstLetter } from '../../utils/text';
 
-interface Props {
+type Props = {
   category: Category;
   onFilterChange: (name: string, parameter: string) => void;
-}
+};
 
 const Filter = (props: Props) => {
   const { category } = props;

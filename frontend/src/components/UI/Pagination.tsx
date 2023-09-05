@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 const length = 2;
 const replace = '...';
 
-interface Props {
+type Props = {
   totalPages: number;
   currentPage: number;
   pageChangeHref: string;
-}
+};
 
 const Pagination = (props: Props) => {
   const { totalPages, pageChangeHref } = props;

@@ -1,4 +1,4 @@
-declare interface Product {
+declare type Product = {
   _id: string;
   name: string;
   category: string | Category;
@@ -7,12 +7,12 @@ declare interface Product {
   images: string[];
   brand?: string;
   stock: number;
-  characteristics:
-    | {
-        _id: string;
-        name: string;
-        parameter: string;
-      }[]
-    | [];
+  characteristics: [
+    {
+      _id: string;
+      name: string;
+      parameter: string;
+    },
+  ];
   slug: string;
-}
+};
