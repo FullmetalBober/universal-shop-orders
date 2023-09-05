@@ -1,10 +1,4 @@
-import { useEffect } from 'preact/hooks';
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from './store';
-import { fetchUserData } from './store/user-actions';
-import { createBasket } from './store/basket-actions';
-import { fetchCategoryData } from './store/category-actions';
-import { basketActions } from './store/basket-slice';
+import { Routes, Route } from 'react-router-dom';
 import Home from './components/Home/Home';
 import Category from './components/Category/Category';
 import Product from './components/Product/Product';
@@ -18,25 +12,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import './app.css';
 
 export function App() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { user, isAuthenticated } = useAppSelector(state => state.user);
-
-  useEffect(() => {
-    dispatch(fetchCategoryData());
-    dispatch(fetchUserData());
-  }, []);
-
-  useEffect(() => {
-    if (user.verified && !user.basket) dispatch(createBasket());
-    dispatch(basketActions.replaceBasket(user.basket));
-  }, [user.verified, user.basket]);
-
-  // if user not verified redirect to verify page
-  const isVerifyPage = location.pathname.includes('/auth/verify');
-  if (isAuthenticated && !user.verified && !isVerifyPage)
-    navigate('/auth/verify', { replace: true });
   return (
     <Layout>
       <Routes>

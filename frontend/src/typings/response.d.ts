@@ -1,7 +1,6 @@
 declare interface Response<Data> {
-  status: number;
-  message: string;
+  status: string;
   data: {
-    data: Data;
+    [key: string]: Data;
   };
 }

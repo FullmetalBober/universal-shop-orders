@@ -1,13 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useForm, SubmitHandler, UseFormProps } from 'react-hook-form';
-import useAxios from 'axios-hooks';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
 import * as EmailValidator from 'email-validator';
-import { AxiosError } from 'axios';
+import { registerUser } from '../../api/users';
 import AuthTemplateForm from './AuthTemplateForm';
 import Button from '../UI/Button';
-import { useAppDispatch } from '../../store';
-import { userActions } from '../../store/user-slice';
 
 type Inputs = {
   email: string;
@@ -26,15 +24,17 @@ const useFormParams: UseFormProps<Inputs> = {
 };
 
 const Register = () => {
-  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
 
-  const [{ loading }, executePost] = useAxios(
-    {
-      url: '/api/v1/users/signup',
-      method: 'POST',
+  const registerUserMutation = useMutation({
+    mutationFn: registerUser,
+    onSuccess: data => {
+      queryClient.setQueryData(['user'], data);
     },
-    { manual: true }
-  );
+    onError: (error: ResponseError) => {
+      toast.error(error.response?.data.message);
+    },
+  });
 
   const {
     register,
@@ -61,21 +61,11 @@ const Register = () => {
   };
 
   const onSubmit: SubmitHandler<Inputs> = async data => {
-    try {
-      const { data: responseData } = await executePost({ data });
-      const { user } = responseData.data;
-
-      toast.success('Ви успішно зареєструвались!');
-
-      dispatch(userActions.login(user));
-    } catch (error) {
-      if (!(error instanceof AxiosError)) return;
-      const errorMessages = error.response?.data.message;
-      toast.error(errorMessages);
-    }
+    await registerUserMutation.mutateAsync(data);
+    toast.success('Ви успішно зареєструвались!');
   };
 
-  const buttonDisabled = !isValid || loading;
+  const buttonDisabled = !isValid || registerUserMutation.isLoading;
   return (
     <main>
       <AuthTemplateForm
@@ -141,7 +131,7 @@ const Register = () => {
         </div>
         <div className='form-control mt-6'>
           <Button
-            loadingMode={loading}
+            loadingMode={registerUserMutation.isLoading}
             disabled={buttonDisabled}
             className='btn btn-primary'
           >

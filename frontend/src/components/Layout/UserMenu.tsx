@@ -1,8 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
 import { getUser, logoutUser } from '../../api/users';
 
 const UserMenu = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const userQuery = useQuery({
     queryKey: ['user'],
     queryFn: () => getUser(),
@@ -19,9 +21,13 @@ const UserMenu = () => {
   });
 
   if (!userQuery.data) return null;
-  const { name, image } = userQuery.data;
+  const { name, image, verified } = userQuery.data;
 
   const nameFirstLetter = name.charAt(0);
+
+  // if user not verified redirect to verify page
+  const isVerifyPage = location.pathname.includes('/auth/verify');
+  if (!verified && !isVerifyPage) navigate('/auth/verify', { replace: true });
 
   const logoutHandle = () => {
     logoutUserMutation.mutate();

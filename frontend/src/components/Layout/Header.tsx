@@ -19,7 +19,7 @@ const Header = () => {
   const basketQuery = useQuery({
     queryKey: ['basket'],
     queryFn: () => getBasket(),
-    enabled: !!userQuery.data,
+    enabled: !!userQuery.data && userQuery.data.verified,
   });
   const products = basketQuery.data?.products || [];
 
