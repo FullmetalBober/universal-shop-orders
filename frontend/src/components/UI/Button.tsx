@@ -8,7 +8,7 @@ const Button = (props: Props) => {
   const { loadingMode } = props;
 
   return (
-    <button {...props} disabled={loadingMode}>
+    <button disabled={loadingMode} {...props}>
       {loadingMode && <Loading />} {props.children}
     </button>
   );

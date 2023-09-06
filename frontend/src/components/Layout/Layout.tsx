@@ -1,3 +1,4 @@
+import { JSX } from 'preact/jsx-runtime';
 import { ToastContainer } from 'react-toastify';
 import Footer from './Footer';
 import Header from './Header';

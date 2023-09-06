@@ -1,3 +1,5 @@
+import { JSX } from 'preact/jsx-runtime';
+
 type Props = {
   children: JSX.Element | JSX.Element[];
   heading: JSX.Element | string;

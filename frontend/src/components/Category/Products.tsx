@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import { currencyFormatter } from '../../utils/text';
 import ProductInfo from '../UI/ProductInfo';
-import BasketButton from '../UI/BasketButton';
 
 type Props = {
   products: Product[];
@@ -42,7 +41,9 @@ const Products = (props: Props) => {
               />
             }
             <div className='card-actions justify-end'>
-              <BasketButton product={product} />
+              <Link to={setHref(product.slug)} className='btn btn-secondary'>
+                Переглянути сторінку
+              </Link>
             </div>
           </div>
         </div>

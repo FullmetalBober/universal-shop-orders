@@ -1,3 +1,4 @@
+import { JSX } from 'preact/jsx-runtime';
 import { Link } from 'react-router-dom';
 
 type Props = {

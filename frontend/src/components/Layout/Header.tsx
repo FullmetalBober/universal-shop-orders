@@ -1,30 +1,18 @@
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 import { SlBasket } from 'react-icons/sl';
 import UserMenu from './UserMenu';
-import { getBasket } from '../../api/baskets';
-import { getUser } from '../../api/users';
+import { useGetBasket, useGetUser } from '../../hooks/use-user';
 import Loading from '../UI/Loading';
 import IndicatorLink from '../UI/IndicatorLink';
 
 const Header = () => {
-  const userQuery = useQuery({
-    queryKey: ['user'],
-    queryFn: () => getUser(),
-    refetchOnWindowFocus: false,
-    retry: 2,
-    enabled: document.cookie.includes(import.meta.env.VITE_AUTH_CHECKER),
-  });
+  const userQuery = useGetUser();
+  const basketQuery = useGetBasket();
 
-  const basketQuery = useQuery({
-    queryKey: ['basket'],
-    queryFn: () => getBasket(),
-    enabled: !!userQuery.data && userQuery.data.verified,
-  });
-  const products = basketQuery.data?.products || [];
+  const products = basketQuery.data?.products;
 
-  let basketItemsCount = 0;
-  basketItemsCount = products.reduce((acc, item) => acc + item.quantity, 0);
+  const basketItemsCount =
+    products?.reduce((acc, item) => acc + item.quantity, 0) || 0;
 
   return (
     <header className='sticky top-0 z-30 bg-base-100 bg-opacity-90 shadow-sm backdrop:blur'>

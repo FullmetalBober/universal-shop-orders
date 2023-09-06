@@ -1,60 +1,71 @@
-import { toast } from 'react-toastify';
-import { useAppSelector } from '../../store';
-import { useAppDispatch } from '../../store';
-import { updateBasket } from '../../store/basket-actions';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Button from './Button';
-import Loading from './Loading';
 import getId from '../../utils/getId';
+import { useGetBasket } from '../../hooks/use-user';
+import { updateBasket } from '../../api/baskets';
+import { Link } from 'react-router-dom';
 
 type Props = {
   product: Product;
 };
 
-const toObjDispatch = (productId: string, quantity: number) => {
-  return { productId, quantity };
+const toObjMutable = (product: string, quantity: number) => {
+  return { product, quantity };
 };
 
 const BasketButton = (props: Props) => {
   const { product } = props;
-  const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
+  const basketQuery = useGetBasket();
+  const updateBasketMutation = useMutation({
+    mutationFn: updateBasket,
+    onSuccess: data => {
+      queryClient.setQueryData(['basket'], data);
+    },
+  });
 
-  const { isAuthenticated } = useAppSelector(state => state.user);
-  const { basket, isLoading } = useAppSelector(state => state.basket);
+  const basket = basketQuery.data;
 
-  const basketProducts = basket?.products;
-  // console.log(basketProducts);
-  const quantity = basketProducts?.find(
-    item => getId(item.product) === product._id
-  )?.quantity;
+  if (basketQuery.isInitialLoading)
+    return (
+      <Button className='btn btn-primary' loadingMode>
+        Завантаження
+      </Button>
+    );
+  if (!basket)
+    return (
+      <Link to='/auth/login' className='btn btn-primary'>
+        Увійдіть щоб додати в кошик
+      </Link>
+    );
 
-  const checkLogin = () => {
-    if (isAuthenticated) return;
-    toast.error('Спочатку увійдіть в обліковий запис!');
-    throw new Error('Спочатку увійдіть в обліковий запис!');
-  };
+  let basketProduct =
+    basket.products.find(item => getId(item.product) === product._id) || null;
+  if (!basketProduct) {
+    basket.products.push(toObjMutable(product._id, 0));
+    basketProduct = basket.products[basket.products.length - 1];
+  }
 
   const addToBasketHandler = () => {
-    checkLogin();
-    const count = quantity ? quantity + 1 : 1;
-    dispatch(updateBasket(toObjDispatch(product._id, count)));
+    if (!basketProduct) return;
+    basketProduct.quantity += 1;
+    updateBasketMutation.mutate(basket);
   };
 
   const subtractFromBasketHandler = () => {
-    checkLogin();
-    const count = quantity ? quantity - 1 : 0;
-    dispatch(updateBasket(toObjDispatch(product._id, count)));
+    if (!basketProduct) return;
+    basketProduct.quantity -= 1;
+    if (basketProduct.quantity === 0)
+      basket.products = basket.products.filter(
+        item => item.product !== product._id
+      );
+    updateBasketMutation.mutate(basket);
   };
 
-  const buttonDisabled = product.stock <= 0;
-  if (isLoading)
-    return (
-      <button className='btn btn-primary' disabled>
-        <Loading /> Завантаження
-      </button>
-    );
+  const buttonDisabled = product.stock - basketProduct.quantity <= 0;
   return (
     <>
-      {!quantity && (
+      {!basketProduct.quantity && (
         <Button
           onClick={addToBasketHandler}
           disabled={buttonDisabled}
@@ -63,21 +74,21 @@ const BasketButton = (props: Props) => {
           У кошик
         </Button>
       )}
-      {quantity && (
+      {!!basketProduct.quantity && (
         <div className='join'>
           <Button
             onClick={subtractFromBasketHandler}
-            disabled={buttonDisabled}
+            disabled={updateBasketMutation.isLoading}
             className='btn btn-primary join-item'
           >
             -
           </Button>
 
-          <span className='btn join-item'>{quantity}</span>
+          <span className='btn join-item'>{basketProduct.quantity}</span>
 
           <Button
             onClick={addToBasketHandler}
-            disabled={buttonDisabled}
+            disabled={buttonDisabled || updateBasketMutation.isLoading}
             className='btn btn-primary join-item'
           >
             +
