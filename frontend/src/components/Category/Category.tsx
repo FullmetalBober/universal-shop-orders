@@ -45,7 +45,7 @@ const Category = () => {
   if (!categoriesQuery.data) return <div>404</div>; //TODO 404 page
 
   // create query params
-  let queryParams: QueryObject = {};
+  let queryParams: QueryParams = {};
   const filterJson = JSON.stringify(arrayFilters);
   if (categoriesQuery.data?._id)
     queryParams.category = categoriesQuery.data._id;

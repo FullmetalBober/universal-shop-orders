@@ -1,6 +1,6 @@
+import { useState } from 'preact/hooks';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Button from './Button';
-import getId from '../../utils/getId';
 import { useGetBasket } from '../../hooks/use-user';
 import { updateBasket } from '../../api/baskets';
 import { Link } from 'react-router-dom';
@@ -15,6 +15,7 @@ const toObjMutable = (product: string, quantity: number) => {
 
 const BasketButton = (props: Props) => {
   const { product } = props;
+  const [timeoutID, setTimeoutID] = useState(0);
   const queryClient = useQueryClient();
   const basketQuery = useGetBasket();
   const updateBasketMutation = useMutation({
@@ -39,33 +40,42 @@ const BasketButton = (props: Props) => {
       </Link>
     );
 
-  let basketProduct =
-    basket.products.find(item => getId(item.product) === product._id) || null;
-  if (!basketProduct) {
-    basket.products.push(toObjMutable(product._id, 0));
-    basketProduct = basket.products[basket.products.length - 1];
+  const basketProducts = basket.products;
+  let productIndex = basketProducts.findIndex(
+    item => item.product === product._id
+  );
+  if (productIndex === -1) {
+    basketProducts.push(toObjMutable(product._id, 0));
+    productIndex = basketProducts.length - 1;
   }
 
   const addToBasketHandler = () => {
-    if (!basketProduct) return;
-    basketProduct.quantity += 1;
-    updateBasketMutation.mutate(basket);
+    basketProducts[productIndex].quantity += 1;
+    updateBasketMutate(basketProducts);
   };
 
   const subtractFromBasketHandler = () => {
-    if (!basketProduct) return;
-    basketProduct.quantity -= 1;
-    if (basketProduct.quantity === 0)
-      basket.products = basket.products.filter(
-        item => item.product !== product._id
-      );
-    updateBasketMutation.mutate(basket);
+    basketProducts[productIndex].quantity -= 1;
+    if (basketProducts[productIndex].quantity === 0)
+      basketProducts.splice(productIndex, 1);
+
+    updateBasketMutate([...basketProducts]);
   };
 
-  const buttonDisabled = product.stock - basketProduct.quantity <= 0;
+  const updateBasketMutate = (data: any) => {
+    clearTimeout(timeoutID);
+    setTimeoutID(
+      setTimeout(() => {
+        updateBasketMutation.mutate(data);
+      }, 1000)
+    );
+  };
+
+  const productInBasket = basketProducts[productIndex];
+  const buttonDisabled = product.stock - productInBasket.quantity <= 0;
   return (
     <>
-      {!basketProduct.quantity && (
+      {!productInBasket.quantity && (
         <Button
           onClick={addToBasketHandler}
           disabled={buttonDisabled}
@@ -74,21 +84,20 @@ const BasketButton = (props: Props) => {
           У кошик
         </Button>
       )}
-      {!!basketProduct.quantity && (
+      {!!productInBasket.quantity && (
         <div className='join'>
           <Button
             onClick={subtractFromBasketHandler}
-            disabled={updateBasketMutation.isLoading}
             className='btn btn-primary join-item'
           >
             -
           </Button>
 
-          <span className='btn join-item'>{basketProduct.quantity}</span>
+          <span className='btn join-item'>{productInBasket.quantity}</span>
 
           <Button
             onClick={addToBasketHandler}
-            disabled={buttonDisabled || updateBasketMutation.isLoading}
+            disabled={buttonDisabled}
             className='btn btn-primary join-item'
           >
             +

@@ -8,12 +8,11 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { App } from './app.tsx';
 import './index.css';
 
+const queryClient = new QueryClient();
+
 const localStoragePersister = createSyncStoragePersister({
   storage: window.localStorage,
 });
-
-const queryClient = new QueryClient();
-
 //? Is this necessary?
 persistQueryClient({
   queryClient,

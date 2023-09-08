@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const getProducts = (queryParams: QueryObject) => {
+export const getProducts = (queryParams: QueryParams) => {
   return axios
     .get<Response<Product[]>>('/api/v1/products', {
       params: queryParams,
@@ -14,7 +14,7 @@ export const getProductBySlug = (slug: string) => {
     .then(res => res.data.data.data);
 };
 
-export const getCountProducts = (queryParams: QueryObject) => {
+export const getCountProducts = (queryParams: QueryParams) => {
   return axios
     .get<Response<number>>('/api/v1/products/count', {
       params: queryParams,

@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema<IUser>(
     name: {
       type: String,
       trim: true,
-      immutable: true,
       required: [true, 'User must have a name'],
     },
     email: {
@@ -36,6 +35,7 @@ const userSchema = new mongoose.Schema<IUser>(
       unique: true,
       lowercase: true,
       trim: true,
+      immutable: true,
       validate: [validator.isEmail, 'Please provide a valid email'],
       required: [true, 'User must have an email'],
     },
