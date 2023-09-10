@@ -21,7 +21,10 @@ const Basket = () => {
       0
     ) || 0;
 
-  const products = basketProducts.map(item => item.product as Product);
+  const products = basketProducts.map(item => ({
+    ...(item.product as Product),
+    quantity: item.quantity,
+  }));
 
   return (
     <main className='my-2 gap-3 md:flex'>

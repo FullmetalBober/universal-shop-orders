@@ -3,8 +3,7 @@ import { currencyFormatter } from '../../utils/text';
 import ProductInfo from './ProductInfo';
 
 type Props = {
-  products: Product[];
-  children?: React.ReactNode;
+  products: (Product & { quantity?: number })[];
   className?: string;
 };
 
@@ -13,7 +12,7 @@ const setHref = (slug: string) => {
 };
 
 const ProductsList = (props: Props) => {
-  const { products, children, className } = props;
+  const { products, className } = props;
 
   return (
     <section className={className}>
@@ -34,6 +33,9 @@ const ProductsList = (props: Props) => {
           <div className='card-body'>
             <h2 className='card-title'>
               <Link to={setHref(product.slug)}>{product.name}</Link>
+              {product.quantity && (
+                <div className='badge badge-secondary'>{product.quantity}</div>
+              )}
             </h2>
             <h3 className='card-title'>{currencyFormatter(product.price)}</h3>
             {
@@ -43,12 +45,9 @@ const ProductsList = (props: Props) => {
               />
             }
             <div className='card-actions justify-end'>
-              {children && children}
-              {!children && (
-                <Link to={setHref(product.slug)} className='btn btn-secondary'>
-                  Переглянути сторінку
-                </Link>
-              )}
+              <Link to={setHref(product.slug)} className='btn btn-secondary'>
+                Переглянути сторінку
+              </Link>
             </div>
           </div>
         </div>
