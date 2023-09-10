@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'preact/hooks';
 import Loading from '../UI/Loading';
 import Filter from './Filter';
-import Products from './Products';
+import ProductsList from '../UI/ProductsList';
 import Pagination from '../UI/Pagination';
 import { getCountProducts, getProducts } from '../../api/products';
 import { getCategories } from '../../api/categories';
@@ -99,7 +99,7 @@ const Category = () => {
         {(productsQuery.isLoading || productsCountQuery.isLoading) && (
           <Loading />
         )}
-        {productsQuery.data && <Products products={productsQuery.data} />}
+        {productsQuery.data && <ProductsList products={productsQuery.data} />}
         {!!productsCountQuery.data && (
           <Pagination
             totalPages={totalPages}

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import ConfirmationBasket from './ConfirmationBasket';
 import { getBasket } from '../../api/baskets';
+import ProductsList from '../UI/ProductsList';
 
 const BasketParams = {
   populate: true,
@@ -8,19 +9,23 @@ const BasketParams = {
 
 const Basket = () => {
   const basketQuery = useQuery({
-    queryKey: ['basket', BasketParams],
+    queryKey: ['basket', 'populated'],
     queryFn: ({ signal }) => getBasket({ signal, params: BasketParams }),
   });
 
+  const basketProducts = basketQuery.data?.products || [];
+
   const totalPrice =
-    basketQuery.data?.products.reduce(
+    basketProducts.reduce(
       (acc, item) => acc + (item.product as Product).price * item.quantity,
       0
     ) || 0;
 
+  const products = basketProducts.map(item => item.product as Product);
+
   return (
     <main className='my-2 gap-3 md:flex'>
-      <div class='w-full'>Baskets</div>
+      <ProductsList products={products} className='w-full' />
       <ConfirmationBasket price={totalPrice} />
     </main>
   );

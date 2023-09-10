@@ -1,6 +1,6 @@
 import { useState } from 'preact/hooks';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import Button from './Button';
+import Button from '../UI/Button';
 import { useGetBasket } from '../../hooks/use-user';
 import { updateBasket } from '../../api/baskets';
 import { Link } from 'react-router-dom';
@@ -18,10 +18,41 @@ const BasketButton = (props: Props) => {
   const [timeoutID, setTimeoutID] = useState(0);
   const queryClient = useQueryClient();
   const basketQuery = useGetBasket();
+
+  const setPopulatedProducts = (data: Basket) => {
+    const populatedBasket = queryClient.getQueryData([
+      'basket',
+      'populated',
+    ]) as Basket | undefined;
+    if (!populatedBasket) return;
+
+    const findPopulatedProduct = (itemDataId: string) => {
+      return populatedBasket.products.find(
+        populatedProduct =>
+          (populatedProduct.product as Product)._id === itemDataId
+      );
+    };
+
+    populatedBasket.products = data.products.map(itemData => {
+      const populatedProduct = findPopulatedProduct(itemData.product as string);
+      if (populatedProduct)
+        return {
+          product: populatedProduct.product,
+          quantity: itemData.quantity,
+        };
+      return {
+        product: product,
+        quantity: itemData.quantity,
+      };
+    });
+  };
+
   const updateBasketMutation = useMutation({
     mutationFn: updateBasket,
     onSuccess: data => {
       queryClient.setQueryData(['basket'], data);
+      setPopulatedProducts(data);
+      queryClient.invalidateQueries(['basket', 'populated']);
     },
   });
 

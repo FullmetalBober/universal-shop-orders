@@ -1,20 +1,22 @@
 import { Link } from 'react-router-dom';
 import { currencyFormatter } from '../../utils/text';
-import ProductInfo from '../UI/ProductInfo';
+import ProductInfo from './ProductInfo';
 
 type Props = {
   products: Product[];
+  children?: React.ReactNode;
+  className?: string;
 };
 
 const setHref = (slug: string) => {
   return `/product/${slug}`;
 };
 
-const Products = (props: Props) => {
-  const { products } = props;
+const ProductsList = (props: Props) => {
+  const { products, children, className } = props;
 
   return (
-    <section>
+    <section className={className}>
       {products.map(product => (
         <div
           key={product._id}
@@ -41,9 +43,12 @@ const Products = (props: Props) => {
               />
             }
             <div className='card-actions justify-end'>
-              <Link to={setHref(product.slug)} className='btn btn-secondary'>
-                Переглянути сторінку
-              </Link>
+              {children && children}
+              {!children && (
+                <Link to={setHref(product.slug)} className='btn btn-secondary'>
+                  Переглянути сторінку
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -52,4 +57,4 @@ const Products = (props: Props) => {
   );
 };
 
-export default Products;
+export default ProductsList;

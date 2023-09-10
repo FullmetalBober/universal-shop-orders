@@ -4,7 +4,7 @@ import Gallery from './Gallery';
 import Loading from '../UI/Loading';
 import ProductInfo from '../UI/ProductInfo';
 import { currencyFormatter } from '../../utils/text';
-import BasketButton from '../UI/BasketButton';
+import BasketButton from './BasketButton';
 import { getProductBySlug } from '../../api/products';
 
 const defaultImg = '/images/productDefault.jpg';
