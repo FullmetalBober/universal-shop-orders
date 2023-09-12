@@ -1,7 +1,7 @@
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { currencyFormatter } from '../../utils/text';
 import Button from '../UI/Button';
-import { createOrder } from '../../api/order';
+import { createOrder } from '../../api/orders';
 
 type Props = {
   price: number;
@@ -12,6 +12,7 @@ const ConfirmationBasket = ({ price }: Props) => {
   const orderMutation = useMutation({
     mutationFn: createOrder,
     onSuccess: () => {
+      queryClient.invalidateQueries(['orders', 'pending']);
       queryClient.setQueriesData(['basket'], []);
     },
   });
