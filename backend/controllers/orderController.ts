@@ -6,7 +6,12 @@ import Basket from '../models/basketModel';
 import Product from '../models/productModel';
 import AppError from '../utils/appError';
 
-export const getAllOrders = factory.getAll(Order);
+const populateOptions = {
+  path: 'products.product',
+  select: 'name imageCover slug',
+};
+
+export const getAllOrders = factory.getAll(Order, populateOptions);
 export const getOrder = factory.getOne(Order);
 export const createOrder = factory.createOne(Order);
 export const updateOrder = factory.updateOne(Order);

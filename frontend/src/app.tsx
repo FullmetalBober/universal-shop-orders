@@ -6,6 +6,7 @@ import Login from './components/Authentication/Login';
 import Register from './components/Authentication/Register';
 import Verify from './components/Authentication/Verify';
 import Basket from './components/Basket/Basket';
+import Orders from './components/Orders/Orders';
 import Layout from './components/Layout/Layout';
 import 'react-multi-carousel/lib/styles.css';
 import 'react-toastify/dist/ReactToastify.css';
@@ -22,6 +23,7 @@ export function App() {
         <Route path='/auth/register' element={<Register />} />
         <Route path='/auth/verify/:emailToken?' element={<Verify />} />
         <Route path='/basket' element={<Basket />} />
+        <Route path='/orders/:status' element={<Orders />} />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </Layout>

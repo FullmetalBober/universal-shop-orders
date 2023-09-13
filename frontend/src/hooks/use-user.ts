@@ -26,8 +26,8 @@ export const useGetOrders = (status?: string) => {
   const user = queryClient.getQueryData(['user']) as User | undefined;
   return useQuery({
     queryKey: ['orders', status],
-    queryFn: ({ signal, pageParam }) =>
-      getOrders({ status: pageParam, signal }),
+    queryFn: ({ signal, queryKey }) =>
+      getOrders({ status: queryKey[1], signal }),
     enabled: !!user,
   });
 };

@@ -44,7 +44,7 @@ const Header = () => {
           )}
           {userQuery.data && (
             <>
-              <IndicatorLink value={orderCount} to='/orders'>
+              <IndicatorLink value={orderCount} to='/orders/pending'>
                 <SlSocialDropbox />
               </IndicatorLink>
 
