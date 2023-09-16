@@ -19,7 +19,7 @@ const BasketButton = (props: Props) => {
   const queryClient = useQueryClient();
   const basketQuery = useGetBasket();
 
-  const setPopulatedProducts = (data: BasketState) => {
+  const setPopulatedProducts = (data: BasketState[]) => {
     const populatedBasket = queryClient.getQueryData([
       'basket',
       'populated',

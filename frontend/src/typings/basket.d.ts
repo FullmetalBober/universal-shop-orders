@@ -1,7 +1,7 @@
 declare type Basket = {
   _id: string;
   user: string | User;
-  products: BasketState;
+  products: BasketState[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -9,4 +9,4 @@ declare type Basket = {
 declare type BasketState = {
   product: string | Product;
   quantity: number;
-}[];
+};
