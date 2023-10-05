@@ -12,7 +12,8 @@ const ProductItemCompact = ({ product }: Props) => {
     <Link
       to={productLink}
       key={ProductInfo._id}
-      className='indicator btn btn-link h-28 btn-circle'
+      data-tip={ProductInfo.name}
+      className='tooltip indicator btn btn-link h-28 btn-circle normal-case'
     >
       <span className='indicator-item badge badge-secondary mt-1 mr-3'>
         {product.quantity}

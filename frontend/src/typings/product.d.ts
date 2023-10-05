@@ -5,7 +5,6 @@ declare type Product = {
   price: number;
   imageCover: string;
   images: string[];
-  brand?: string;
   stock: number;
   characteristics: [
     {

@@ -1,14 +1,13 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useQuery, useQueryClient, useMutation } from '@tanstack/react-query';
-import { getUser, logoutUser } from '../../api/users';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
+import { logoutUser } from '../../api/users';
+import UserImage from '../UI/UserImage';
+import { useGetUser } from '../../hooks/use-user';
 
 const UserMenu = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const userQuery = useQuery({
-    queryKey: ['user'],
-    queryFn: () => getUser(),
-  });
+  const userQuery = useGetUser();
 
   const queryClient = useQueryClient();
   const logoutUserMutation = useMutation({
@@ -21,9 +20,7 @@ const UserMenu = () => {
   });
 
   if (!userQuery.data) return null;
-  const { name, image, verified } = userQuery.data;
-
-  const nameFirstLetter = name.charAt(0);
+  const { verified } = userQuery.data;
 
   // if user not verified redirect to verify page
   const isVerifyPage = location.pathname.includes('/auth/verify');
@@ -39,10 +36,7 @@ const UserMenu = () => {
         tabIndex={0}
         className='avatar placeholder btn btn-circle btn-ghost'
       >
-        <div className='w-10 rounded-full bg-neutral-focus text-neutral-content'>
-          {image && <img src={image} />}
-          {!image && <span className='text-3xl'>{nameFirstLetter}</span>}
-        </div>
+        <UserImage {...userQuery.data} />
       </label>
       <ul
         tabIndex={0}
