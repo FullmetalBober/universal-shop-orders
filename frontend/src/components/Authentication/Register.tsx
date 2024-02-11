@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler, UseFormProps } from 'react-hook-form';
 import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
@@ -24,6 +24,7 @@ const useFormParams: UseFormProps<Inputs> = {
 };
 
 const Register = () => {
+  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   const registerUserMutation = useMutation({
@@ -63,6 +64,7 @@ const Register = () => {
   const onSubmit: SubmitHandler<Inputs> = async data => {
     await registerUserMutation.mutateAsync(data);
     toast.success('Ви успішно зареєструвались!');
+    navigate('/auth/verify');
   };
 
   const buttonDisabled = !isValid || registerUserMutation.isLoading;
