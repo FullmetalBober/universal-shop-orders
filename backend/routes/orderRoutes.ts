@@ -13,13 +13,16 @@ router
 
 router.route('/:id').get(orderController.getOrder);
 
+router
+  .route('/')
+  .get(orderController.getAllOrders);
+
 router.use(authMiddleware.restrictTo('moderator', 'admin'));
 
 router.route('/:id').patch(orderController.setStatus);
 
 router
   .route('/')
-  .get(orderController.getAllOrders)
   .post(orderController.createOrder);
 
 export default router;
